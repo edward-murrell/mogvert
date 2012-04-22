@@ -25,6 +25,7 @@ int ogg_decoder::decode(unsigned char &wave_buffer)
 {
 	int returnvar = 0;
 
+    // TODO - explain what the various options passed to ov_read are
 	/* According to the API, arg 7 should be a 0 (unsigned char) - Don't, bad things happen */
     #ifdef _BIG_ENDIAN
 		returnvar = ov_read(&ogghandle, (char *) &wave_buffer, WAVE_BUFFER_SIZE, 1, 2, 1, 0);
@@ -93,8 +94,6 @@ void ogg_decoder::ogg_id_extract(char *from[], char *output[], char test[])
 		}
 }
 
-
-
-
-
-
+char* ogg_decoder::get_decoder_name() {
+    return "ogg";
+}

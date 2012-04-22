@@ -1,13 +1,13 @@
 #include "init.h"
 
-mog_info mog_initmog(int argc, unsigned char* argv[]) {
+mog_info mog_initmog(int argc, char* argv[]) {
 	// if no command-line options were given, print a usage message
 	if (argc == 1) {
 		mog_showhelp(argv[0]);
 		exit(0);
 	}
 
-	unsigned char *prevarg; // this was moved in from file scope
+	char *prevarg; // this was moved in from file scope
 
 	int			c; // getopt's return val
 	int			show_stats;
@@ -28,7 +28,7 @@ mog_info mog_initmog(int argc, unsigned char* argv[]) {
 	info.output_file    = 	"/dev/stdout";
 	info.copy_tags	    =   1;
 	info.enc_module     = 	DEFAULT_ENCODER;
-	info.bitrate	    = 	DEFAULT_ENCODER_BITRATE; // TODO - How did this // incomplete comment? what happen?
+	info.bitrate	    = 	DEFAULT_ENCODER_BITRATE; 
 	info.reencode_time  =  -1;
 	info.check_validity =   1;
 
@@ -92,7 +92,7 @@ mog_info mog_initmog(int argc, unsigned char* argv[]) {
 
 		// set the previous argument so if we have an error we know
 		// what option caused it
-		prevarg = (unsigned char *)optarg;
+		prevarg = (char *)optarg;
 	}
 	fprintf(stderr,"Done!\n");
 	if(show_stats == 1) mog_sumstats(info);
@@ -115,7 +115,7 @@ void mog_sumstats(struct mog_info info) {
 	else fprintf(stderr,"Copy Tags:       no\n\n");
 }
 
-void mog_showhelp(unsigned char *app) {
+void mog_showhelp(char *app) {
 	printf("Usage:\n");
 	// IMO it'd be nice to have input and output files not specified as options but just as args, ie...
 	// printf(\t%s [ -stq ] [ -b bitrate ] [ -e encoder_module ] [ -l length ] in-file [ out-file ]\n", app);

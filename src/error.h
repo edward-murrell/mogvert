@@ -14,9 +14,9 @@
 
 void die_on_file_openr(char *filename);
 void die_on_file_openw(char *filename);
-void die_on_cmdline(int cmd_error_code,int optind,char *optarg, char *prevarg = NULL);
-void module_notfound(char *module);
-void type_mismatch(char *module);
-void invalid_encoder(char *encoder);
+void die_on_cmdline(int cmd_error_code,int optind,const char *optarg, const char *prevarg = NULL);
+void module_notfound(const char *module);
+void type_mismatch(const char *module);
+void invalid_encoder(const char *encoder);
 
 #endif /* _ERROR_H_ */

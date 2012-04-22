@@ -12,10 +12,10 @@
 
 // a structure to easily access the command line arguments
 typedef struct mog_info {
-	char *input_file;
-	char *dec_module;
-	char *output_file;
-	char *enc_module;
+	const char *input_file;
+	const char *dec_module;
+	const char *output_file;
+	const char *enc_module;
 	int bitrate;
 	int reencode_time;
 	int copy_tags;
@@ -23,8 +23,8 @@ typedef struct mog_info {
 } mog_info;
 
 
-mog_info mog_initmog(int argc, unsigned char **argv);
+mog_info mog_initmog(int argc, char **argv);
 void mog_sumstats(struct mog_info info);
-void mog_showhelp(unsigned char *app);
+void mog_showhelp(char *app);
 
 #endif /* _INIT_H_ */

@@ -10,7 +10,7 @@
 #include <time.h>
 #include <typeinfo>
 
-int main(int argc, unsigned char* argv[])
+int main(int argc, char* argv[])
 {
 	mog_info info;	// struct for cmdline args
     struct encoding_options encodeop;
@@ -36,13 +36,14 @@ int main(int argc, unsigned char* argv[])
 
 	printf("inputfile ptr: %p\n",inputfile);
 
-    encodeop.bitrate = info.bitrate;		// TODO - We've got some bugs for this to happen
+    encodeop.bitrate = info.bitrate;
 
-	// expand on this to setup multiple file formats, add the tests for their validity to filehandler.c
+// expand on this to setup multiple file formats, add the tests for their validity to filehandler.c
 // ======================================================
 
 // == Init the decoder
 
+        
 	fprintf(stderr,"Checking if %s is a valid decoder... ",info.dec_module);
 	if(check_decoder(info.dec_module)) {
 		fprintf(stderr,"success.\n");

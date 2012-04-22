@@ -53,6 +53,10 @@ flac_decoder::~flac_decoder()
 	// yay.
 }
 
+char* flac_decoder::get_decoder_name() {
+    return "ogg";
+}
+
 
 // ====== Implementations of protected virtual functions here =====
 FLAC__StreamDecoderReadStatus Stream_Ext::read_callback (FLAC__byte buffer[], unsigned *bytes)

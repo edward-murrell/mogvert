@@ -1,14 +1,14 @@
 #include "error.h"
 
 // exit with an error if the file can't be opened (ro)
-void mog_die_fopenr(char *filename) 
+void mog_die_fopenr(const char *filename) 
 {
 	printf("Error! Could not open file '%s' for reading!\n",filename);
 	exit(1);
 }
 
 // exit with an error if the file can't be opened (a)
-void die_die_fopenw(char *filename)
+void die_die_fopenw(const char *filename)
 {
 	printf("Error! Could not open file '%s' for writing!\n",filename);
 	exit(1);
@@ -26,7 +26,7 @@ void die_die_fopenw(char *filename)
 	// TODO, Wouldn't it be better to have prevarg and optarg the other way round in case we
 	// ever have single-value args, then prevarg can be void (by default).
 */
-void die_on_cmdline(int cmd_error_code, int optind, char *optarg, char *prevarg)
+void die_on_cmdline(int cmd_error_code, int optind, const char *optarg, const char *prevarg)
 {
 	printf("Error!\n");
 	switch (cmd_error_code)
@@ -52,7 +52,7 @@ void module_notfound(const char *module)
 }
 
 // exit if the actual filetype and the decoding module are a mismatch
-void type_mismatch(char *module)
+void type_mismatch(const char *module)
 {
 	char response = 0;
 	printf("Error!\nType was not %s!\n",module);
@@ -79,14 +79,14 @@ void unexplained_error()
 	exit(1);
 }
 
-void invalid_decoder(char *decoder)
+void invalid_decoder(const char *decoder)
 {
 	printf("Error!\nThere is no %s decoder! Exiting...\n",decoder);
 	exit(1);
 }
 
 
-void invalid_encoder(char *encoder)
+void invalid_encoder(const char *encoder)
 {
 	printf("Error!\nThere is no %s encoder! Exiting...\n",encoder);
 	exit(1);

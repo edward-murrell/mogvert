@@ -10,6 +10,7 @@ public:
 	virtual bool init(FILE *inputfile)=0;
 	// it'd be nice if this function was actually
 	// virtual struct generic_file_info& getgfi();
+    virtual char* get_decoder_name()=0;
 	virtual void getgfi(struct generic_file_info &gfi)=0;
 	virtual int decode(unsigned char &wave_buffer)=0 ;		// This function returns number of BYTES
 	virtual int close(unsigned char &wave_buffer)=0 ;

@@ -6,9 +6,9 @@
 #include <strings.h>
 #include <stdio.h>
 
-int check_decoder(char *decoder);
-int check_encoder(char *encoder);
-int get_code(char *string);
+int check_decoder(const char *decoder);
+int check_encoder(const char *encoder);
+int get_code(const char *string);
 char get_letter();
 
 #endif /* _FILEHANDLER_H_ */
