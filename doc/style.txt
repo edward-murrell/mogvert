@@ -1,0 +1,5 @@
+Tabs are tabs are tabs. They are not spaces.
+
+-Wall is used for a reason. You can break it your machine.
+
+The lead co-developer uses PPC. Don't piss him off by making patchs endian dependant.

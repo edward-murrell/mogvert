@@ -1,0 +1,48 @@
+Mogconvert [22/05/2004]-v0.1a-4:
+ - Added a configure script which takes
+   care of platform specific idiosyncracies
+   such as the method of installation,
+   what compiler is used, what arch is 
+   passed to the compiler, whether or not
+   to strip binaries, what program to use
+   to compress the manual page, also makes
+   sure all necessary libraries are there.
+ - Patches for endianness are obsolete
+   and have been removed.
+ - Fixed the segfault on opening a device
+   that is already in use.
+ - Minor changes to the readme.
+
+Mogconvert [18/05/2004]-v0.1a-3:
+ - Fix the fix to the build environment
+
+Mogconvert [18/05/2004]-v0.1a-2:
+ - Minor fixes to build environment
+
+Mogconvert-[17/05/2004]-v0.1a-1:
+ - Added multiple new command line options:
+    -h output usage information.
+    -s output summary of user input.
+    -q do not perform input validit check.
+    -t do not copy tags to output.
+    -e encode format/module.
+    -b bitrate of output.
+    -i input file.
+    -o output file.
+    -l maximum time to recode input.
+ - Created a change log.
+ - Added patches for big and little endian support.
+ - Added six examples to man page.
+ - Added the ability to encode from pipes.
+ - Added status bar; refreshs every second.
+ - Added average recode speed to exit statistics.
+
+Mogconvert-[15/05/2004]-v0.1a:
+ - Angelorum joined the project.
+ - Added a basic manual page.
+ - Added a propper comand line argument parser.
+ - Cleaned up source code, added nicer indenting.
+ - Created a small readme.
+
+Mogconvert-[08/05/2004]-v0.1a:
+ - Initial release.

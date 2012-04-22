@@ -1,0 +1,17 @@
+todo
+
+ - Add support for more encoders and decoders
+ - Initialise our general file info structures
+   so we don't have null pointers floating 
+   around, and it doesn't look bad when playing
+   an input file with out tags.
+ - Fix all the TODO comments around the place.
+ - Remove unneccessary code.
+ - Add 1 to n channels support
+ - Add multiple hz support
+ - Add multiple bitrates support (8,24,32?)
+ - Add Make uninstall
+ - Add batch processing
+ - Add CDDA input support.
+ - Add freedb support for CDDA (and lossless batch input, eg. for FLAC?).
+ - Fix bugs.

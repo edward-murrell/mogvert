@@ -1,0 +1,93 @@
+-------------------------------------------------------------------------------
+Project:  Mogconvert - Audio File Reencoder
+Release:  0.1a
+Authors:  Edward Murrell <edward@murrell.co.nz>
+          Angelorum <angelorum@murrell.co.nz>
+Website:  http://murrell.co.nz/~edward/mog/
+Status:   pre-alpha
+
+Index
+
+- What is mogconvert?
+- What's included in the package?
+- How do I use mogconvert?
+- Getting started.
+- What platforms does mogconvert run on?
+- I found a bug, what now?
+- Additional information.
+
+What is mogconvert?
+
+Mogconvert is an audio reencoder which supports many formats. It is designed
+to be modular, fast and reliable. Mogconvert uses a modular decoding and
+encoding engine, therefore making it is easy to add extra modules to reencode
+to aditional formats. Mogconvert is the only program of it's kind under the GPL
+licensing system.
+
+Key features:
+	- Fast and reliable reencoder.
+	- Optimal performance by a single-thread design.
+	- Support for multiple audio formats.
+	- Modular design, for increased felxability.
+	- Lightweight.
+
+What's included in the package?
+
+The following files will be found in the distribution (alphabetically):
+	doc		- Direcotry containing additional documentation.
+	Makefile	- The makefile.
+	man		- Direcotry containing the mogconvert manual page(s).
+	readme		- This file, general information about mogconvert.
+	src		- Direcotry containing the mogconvert source code.
+
+How do I use mogconvert?
+
+The manual pages included in the man/ directory explain the syntax of mogconvert. You should read them carefully, To read a manual page
+you can use the following command:
+	nroff -mandoc -Tascii manual.num | less
+
+Or troff/groff instead of nroff. You can also copy these manual pages into your
+systems manual directory so you can just use the command:
+	man num manual
+
+Getting started
+
+To reencode input.ogg to output.mp3, issue the following command at the prompt:
+	$ mogconvert -e mp3 -b bitrate -i input.ogg -o output.mp3
+This can be generalised to:
+	$ mogconvert -e encoder_module -b bitrate -i input_file -o output_file
+
+What platforms does mogconvert run on?
+
+Currently mogconvert runs on the x86 and ppc platforms.
+
+I found a bug, what now?
+
+It is possible that you may find a bug in mogconvert during usage. If you
+discover one, we would appreciate it if you could mail us the details. Try to
+be as clear as possible in the description and try to include as much of 
+the following as possible:
+	- Bug summary in the subject.
+	- Extensive bug description.
+	- How to reproduce the bug.
+	- Your system information, (OS, architecture).
+	- Building and version information.
+	- Any ideas that may have caused the bug.
+	- A suggested patch :)
+	- Any other information you think which can be of use.
+
+You can mail your bug reports to edward@murrell.co.nz
+
+Additional information
+
+To run mogconvert on a big endian machine, you have to patch the source as follows:
+	$ patch -p 0 < patches/big_endian.patch
+To revert the code back to little endian run:
+	$ patch -p 0 < patches/little_endian.patch
+
+Mogconvert was founded by Edward Murrell and he can be reached at
+edward@murrell.co.nz. If you have any useful suggestions, please mail him them.
+
+He would also like to thank the following persons, (alphabetically):
+	- angelorum (coding,big endian support,config scripts,documentation)
+	- any other people who might feel forgotten.

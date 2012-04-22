@@ -1,0 +1,46 @@
+gcc mogconvert.c -o mogconvert -lmp3lame -lvorbisfile -lao
+
+BUFFER SIZE IS IN BYTES.
+
+// This stuff is going to have to go.
+//ao_initialize();
+//ao_sample_format out_format;
+//int out_driver_id = ao_default_driver_id();
+//	out_format.bits = 16;
+//	out_format.channels = 2;
+//	out_format.rate = 44100;
+//	out_format.byte_format = AO_FMT_LITTLE;
+//ao_device* out_device = ao_open_live(out_driver_id, &out_format,NULL);
+
+// This is the actual play thing.
+ao_play(out_device, wavout, BUFFER_SIZE);
+
+// Do this to clean up.
+ao_shutdown();
+
+
+
+// Lame API notes:
+
+How to:
+lame_global_flags *lamehandle = lame_init(); // where lamehandle is the general handle for handling this encode stream
+lame_set_brate(lamehandle, 256); // set up bitrate , etc, etc, etc
+lame_init_params(lamehandle); // having done all that, init it.
+
+/*
+Input is fed to the lame lib using the lame_encode_buffer_XXXXX function. Sometimes, depending on how much it has
+encoded, it will spit out some usable mp3 junk. If the input is too small to make at least one frame it won't output
+anything. the output buffer will seldom always be filled. Make sure output buffer is big enough to handle, else bad
+stuff happens. (Make same size as input easiest).
+*/
+{
+	encoding_status = lame_encode_buffer_interleaved(
+		lamehandle,
+		input_buffer,
+		input_buffer_size,
+		ouput_buffer,
+		output_buffer_size);
+
+	if (encoding_status>0)
+		fwrite(encout, 1, encoding_status,outputfile);
+}

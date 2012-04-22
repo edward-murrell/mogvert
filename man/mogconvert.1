@@ -1,0 +1,146 @@
+.TH mogconvert 1 "16 May 2004" "mogconvert"
+.SH NAME
+mogconvert \- reencode audio files
+.SH SYNOPSIS
+.BI mogconvert
+[
+.BI \-sqt
+]
+[
+.BI \-e " encmod "
+]
+[
+.BI \-b " bitrate "
+]
+[
+.BI \-i " inputfile "
+]
+[
+.BI \-o " outputfile"
+]
+[
+.BI \-l " time"
+]
+.br
+.B mogconvert 
+[
+.BI \-h
+]
+.SH DESCRIPTION
+.B mogconvert
+is a fast, lightweight  and reliable audio reencoding engine supporting multiple file formats. It has a modular design allowing greater flexibility and the ability to incorperate additional encoder and decoder modules with ease. The current version of
+.B mogconvert
+requires a little\-endian compatible machine to function, unless the source code was patched with patches/big_endian.patch before it was compiled.
+.B mogconvert
+also supports copying the text fields in it's input file to the output file, thus comments are not stripped.
+.SH OPTIONS
+.TP 
+\fB-e \fIencmod
+Use the 
+.B encmod
+encoder module.
+.TP
+\fB-b \fIbitrate
+Encode the output file as a 
+.B bitrate
+kbps file. Currently the output file's 
+.B bitrate
+is restricted to certain powers of two, namely 8, 16, 32, 64, 128, 192, 320.
+.TP
+\fB-i \fIinputfile
+Decode audio from 
+.B inputfile.
+.TP
+\fB-o \fIoutputfile
+Encode audio to 
+.B outputfile.
+.TP
+\fB-h 
+.br
+Output usage information and exit.
+.TP
+\fB-s
+.br
+Output a summary of the user input. If no user input is given this option will display the default values for the above options. The defaults are as follows:
+.br
+	Input File      = /dev/stdin
+.br
+	Output File     = /dev/stdout
+.br
+	Encoder Module  = mp3
+.br
+	Bitrate         = 128 kbps
+.br
+	Reencode Time   = unlimited
+.br
+	Copy Tags       = yes
+.br
+	Check Validity  = yes
+.br
+.TP
+\fB-l \fItime
+Reencode the input file for a maximum of 
+.B time
+seconds. Default is to reencode the whole input file.
+.TP
+\fB-t
+.br
+Do not perform tag detection and do not copy tags to output file.
+.TP
+\fB-q
+.br
+Do not check the input file for validity. This is neccessary for reading from the standard input or from a pipe as we can not rewind the stream.
+.br
+.SH EXAMPLES
+To recode input.ogg to output.mp3 at 320 kbps and print a summary of the user input before encoding:
+.br
+.RS
+.B mogconvert -i input.ogg -o output.mp3 -b 320 -e mp3 -s
+.RE
+.PP
+To recode an ogg to a 320 kbps mp3 and strip it's tags:
+.RS
+.B mogconvert -i input.ogg -o output.mp3 -b 320 -e mp3 -t
+.RE
+.PP
+To recode an ogg from a pipe into a 320 kpbs mp3, and feed it out another pipe:
+.RS
+.B cat input.ogg | mogconvert -q -b 320 -e mp3 | less
+.RE
+.PP
+To recode input.ogg to output.mp3 for a maximum of 5 seconds:
+.RS
+.B mogconvert -i input.ogg -e mp3 -o output.mp3 -l 5
+.RE
+.PP
+To decode input.ogg to your audio device, and print a summary of user input:
+.RS
+.B mogconvert -i input.ogg -e ao -s
+.RE
+.PP
+To play the first ten seconds of input.ogg to your audio device:
+.RS
+.B mogconvert -i input.ogg -e ao -l 10
+.RE
+.PP
+To output usage information and exit:
+.RS
+.B mogconvert -h
+.RE
+.PP
+.SH VERSION
+At this stage
+.B mogconvert
+is pre-alpha.
+.SH AUTHORS
+.TP
+.TP
+Developers (Alphabetical Order):
+.br
+Angelorum        <angelorum@murrell.co.nz>
+.br
+Edward Murrell   <edward@murrell.co.nz>
+.P
+Internet references:
+.br
+http://murrell.co.nz/~edward/mog/

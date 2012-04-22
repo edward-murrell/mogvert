@@ -1,0 +1,215 @@
+#!/bin/bash
+#configuration for mogconvert
+
+# TODO
+# * add support for --prefix
+# * add output for --help
+
+CXX=g++
+VERSION="0.2"
+CXXFLAGS="-O3 -Wall -g -pipe"
+OBJS="init.o error.o filehandler.o decoders/ogg.o decoders/flac.o encoders/mp3.o encoders/ao.o mogconvert.o"
+BINARY="mogconvert"
+BINDIR="/usr/local/"
+MANDIR="/usr/man"
+MANPAGE="mogconvert.1"
+SDIR="src"
+MDIR="man"
+
+#clean old files
+rm -f Makefile
+rm -f src/Makefile
+rm -f man/Makefile
+
+printf "Configuring mogconvert version $VERSION\n"
+
+#make sure we actually have a compiler
+printf "Checking for a working C++ compiler... "
+if [ -n $CXX ]; then printf "$CXX\n";
+else
+	CXX=`which g++`
+	if [ -z $CXX ]; then
+		CXX=`which g++`
+	else
+		printf "none\nAborting\n"
+		exit 1
+	fi
+	printf "$CXX\n"
+fi
+
+
+
+#set our processor specific cflags
+printf "Checking host system type... "
+ARCH=`uname -m 2>/dev/null`
+if [ $ARCH == "ppc" ]; then ARCH=powerpc; fi;
+CXXFLAGS="$CXXFLAGS -march=$ARCH"
+printf "$ARCH\n"
+
+# Define a macro to keep FLAC compilation working.
+# TBH I think this is not the job of the configure script, but this makes it work ;)
+if [ -e /usr/include/inttypes.h ]; then CXXFLAGS="$CXXFLAGS -DHAVE_INTTYPES_H"; fi
+
+#find out what to strip executables with
+printf "Checking for strip... "
+STRIP=`which strip 2>/dev/null`
+if [ -z $STRIP ]; then
+	printf "none\n"
+else
+	printf "$STRIP\n";
+fi
+
+#find out how to install files
+printf "Checking for install... "
+INSTALL=`which install 2>/dev/null`
+if [ -z $INSTALL ]; then
+	printf "none\n"
+else
+	printf "$INSTALL\n";
+fi
+
+#if we want our man pages compressed
+printf "Checking for gzip... "
+COMPRESS=`which gzip 2>/dev/null`
+SUFFIX=.gz
+if [ -z $COMPRESS ]; then
+	printf "no\n"
+	COMPRESS=`which bzip2 2>/dev/null`
+	printf "Checking for bzip2... "
+	if [ -z $COMPRESS ]; then
+		printf "no\n"
+	else
+		printf "$COMPRESS\n";
+		SUFFIX=.bz2
+	fi
+else
+	printf "$COMPRESS\n";
+fi
+
+
+#make sure we have all required libraries
+LIBS=""
+FLAG=0
+printf "Checking for lame libraries... "
+`ld -lmp3lame -lm -e 0 1>/dev/null 2>&1` && FLAG=1;
+if [ $FLAG==1 ]; then
+	LIBS="$LIBS -lmp3lame";
+	printf "yes\n"
+	FLAG=0;
+else
+	printf "no\nAborting\n";
+	exit 1;
+fi
+
+printf "Checking for vorbis libraries... "
+`ld -lvorbis -lvorbisfile -e 0 1>/dev/null 2>&1` && FLAG=1;
+if [ $FLAG==1 ]; then
+	LIBS="$LIBS -lvorbisfile -lvorbis";
+	printf "yes\n"
+	FLAG=0;
+else
+	printf "no\nAborting\n";
+	exit 1
+fi
+
+printf "Checking for ao libraries... "
+ `ld -lao -e 0 1>/dev/null 2>&1` && FLAG=1;
+if [ $FLAG==1 ]; then
+	LIBS="$LIBS -lao";
+	printf "yes\n"
+	FLAG=0;
+else
+	printf "no\nAborting\n";
+	exit 1
+fi
+
+
+printf "Checking for FLAC++ libraries... "
+ `ld -lFLAC++ -e 0 1>/dev/null 2>&1` && FLAG=1;
+if [ $FLAG==1 ]; then
+	LIBS="$LIBS -lFLAC++";
+	printf "yes\n"
+	FLAG=0;
+else
+	printf "no\nAborting\n";
+	exit 1
+fi
+
+
+#write new makefiles
+#write manual page makefile
+[ ! -z $COMPRESS ] && printf "COMPRESS = $COMPRESS\n" >> man/Makefile;
+[ ! -z $INSTALL ] && printf "INSTALL = $INSTALL\n" >> man/Makefile;
+printf "MANDIR = $MANDIR\n" >> man/Makefile;
+printf "MANPAGE = $MANPAGE\n" >> man/Makefile;
+
+if [ -z $COMPRESS ]; then
+	printf "\nall:\n\techo 'No compression program was selected at compile time, leaving manaul page uncomressped'\n" >> man/Makefile;
+else
+	printf "\nall:\n\t\$(COMPRESS) -c \$(MANPAGE) > \$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+fi
+
+if [ -z $INSTALL ]; then
+	printf "\ninstall:\n\tcp -f \$(MANPAGE)$SUFFIX \$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+	printf "\tchmod 0644 \$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+	printf "\tchmod root:root \$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+else
+	printf "\ninstall:\n\t\$(INSTALL) -m 0644 -o root -g root \$(MANPAGE)$SUFFIX \$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+fi
+
+printf "\nclean:\n\trm -f \$(MANPAGE)$SUFFIX\n\n" >> man/Makefile;
+
+
+#write source makefile
+[ ! -z $INSTALL ] && printf "INSTALL = $INSTALL\n" >> src/Makefile;
+[ ! -z $STRIP ] && printf "STRIP = $STRIP\n" >> src/Makefile;
+printf "BINARY=$BINARY\n" >> src/Makefile;
+printf "CXX=$CXX\n" >> src/Makefile;
+printf "LIBS=$LIBS\n" >> src/Makefile;
+printf "CXXFLAGS=$CXXFLAGS\n" >> src/Makefile;
+printf "OBJS=$OBJS\n" >> src/Makefile;
+printf "BINDIR=$BINDIR\n" >> src/Makefile;
+
+printf "\n.PHONY: all run clean install\n" >> src/Makefile
+printf "\n.SUFFIXES:\n" >> src/Makefile
+
+printf "\n%%.o: %%.cc\n\t\$(CXX) \$(CXXFLAGS) -c -o \$@ \$^\n" >> src/Makefile;
+printf "\n%%.o: %%.c\n\t\$(CXX) \$(CXXFLAGS) -c -o \$@ \$^\n" >> src/Makefile;
+
+printf "\nall: \$(BINARY)\n" >> src/Makefile;
+
+printf "\n\$(BINARY):\t\$(OBJS)\n\t\$(CXX) \$(CXXFLAGS) \$(LIBS) -o \$(BINARY) \$(OBJS)\n" >> src/Makefile;
+
+if [ ! -z $STRIP ]; then
+	printf "\ninstall: all\n\t\$(STRIP) \$(BINARY)\n\t" >> src/Makefile;
+	if [ ! -z $INSTALL ]; then
+		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+	else
+		printf "cp -f \$(BINARY) \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchmod 0755 \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchown root:root \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+	fi
+else
+	if [ ! -z $INSTALL ]; then
+		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+	else
+		printf "cp -f \$(BINARY) \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchmod 0755 \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchown root:root \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+	fi
+fi
+
+printf "\nrun: \$(BINARY)\n\t./\$(BINARY)\n" >> src/Makefile;
+
+printf "\nclean:\n\t-rm -f \$(OBJS) \$(BINARY)\n\t-rm -f ../\$(BINARY)\n" >> src/Makefile;
+
+#create main makefile
+printf "SRCDIR = $SDIR\nMANDIR = $MDIR\n" >> Makefile
+printf "\n.PHONY: all install run clean\n" >> Makefile
+printf "\nall:\n\tcd \$(SRCDIR); make;\n\tcd \$(MANDIR); make;\n" >> Makefile
+printf "\ninstall: all\n\tcd \$(SRCDIR); make install;\n\tcd \$(MANDIR); make install;\n" >> Makefile
+printf "\nrun:\n\tcd \$(SRCDIR); make run;\n" >> Makefile
+printf "\nclean:\n\tcd \$(SRCDIR); make clean;\n\tcd \$(MANDIR); make clean;\n" >> Makefile
+
+#clean up after our selves
+rm -f a.out
