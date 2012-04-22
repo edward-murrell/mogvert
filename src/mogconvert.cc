@@ -10,7 +10,7 @@
 #include <time.h>
 #include <typeinfo>
 
-int main(int argc, char* argv[])
+int main(int argc,  char* argv[])
 {
 	mog_info info;	// struct for cmdline args
     struct encoding_options encodeop;
@@ -43,18 +43,20 @@ int main(int argc, char* argv[])
 
 // == Init the decoder
 
-        
-	fprintf(stderr,"Checking if %s is a valid decoder... ",info.dec_module);
-	if(check_decoder(info.dec_module)) {
-		fprintf(stderr,"success.\n");
+    if (info.dec_module == NULL)    
+        decode_format = get_code(info.input_file);
+	else if(check_decoder(info.dec_module))
+    {
 		decode_format = get_code(info.dec_module);
 	}
 	else
 	{
-		fprintf(stderr,"failed.\n");
+		fprintf(stderr,"Failed to detect input format.\n");
 		exit(1); // TODO - Need proper (and documented) exit codes
 	}
-
+    
+	fprintf(stderr,"\nInitilizing decoding engine... %d\n",decode_format);
+    
 	switch (decode_format) {
 	case FORMAT_OGG:
 		decoder_ob = new ogg_decoder(); break;
@@ -65,7 +67,6 @@ int main(int argc, char* argv[])
 		exit(1);
 	}
 
-	fprintf(stderr,"\nInitilizing decoding engine...\n");
 	if (! decoder_ob->init(inputfile))
 	{
 		fprintf(stderr,"Failed to open input file.\n");
@@ -77,18 +78,20 @@ int main(int argc, char* argv[])
 // == Init the encoder
 
 	// check if the encoder is supported
-	fprintf(stderr,"Checking if %s is a valid encoder... ",info.enc_module);
-	if(check_encoder(info.enc_module)) {
-		fprintf(stderr,"Done!\nEncoding ouput file as %s...\n",info.enc_module);
+    if (info.dec_module == NULL)    
+        encode_format = get_code(info.output_file);
+	else if(check_encoder(info.enc_module)) {
 		encode_format = get_code(info.enc_module);
-	}
+	} else {
+   		fprintf(stderr,"Unknown output format.\n");
+    }
 
 	switch (encode_format) {
 	case FORMAT_MP3:
 		encoder_ob = new mp3_encoder(); break;
 	case FORMAT_AO:
 		encoder_ob = new ao_encoder(); break;
-	default: // *should* never execute
+	default: // *should* never execute, since input should get caught above
 		fprintf(stderr, "Invalid encoder. This is a bug!\n");
 		exit(1);
 	}

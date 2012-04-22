@@ -6,6 +6,7 @@
 
 #define STRINGS_SIZE 1024
 
+#define FORMAT_UNDEFINED 65536;
 #define FORMAT_WAV 1
 #define FORMAT_MP3 2
 #define FORMAT_OGG 3

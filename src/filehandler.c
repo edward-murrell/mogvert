@@ -12,20 +12,19 @@
 //	and causes a segfault.
 int get_code(const char *string) {
     
-    int length =3;
-    
-	int code = FORMAT_MP3; // Default
-        if (strncasecmp("WAV",string+length-3,3) == 0)
+    const char* suffix = strrchr ( string , '.')+1;
+
+	int code = FORMAT_UNDEFINED; // Default
+        if (strncasecmp("WAV",suffix,3) == 0)
                 code = FORMAT_WAV;
-        if (strncasecmp("MP3",string+length-3,3) == 0)
+        if (strncasecmp("MP3",suffix,3) == 0)
                 code = FORMAT_MP3;
-        if (strncasecmp("OGG",string+length-3,3) == 0)
+        if (strncasecmp("OGG",suffix,3) == 0)
                 code = FORMAT_OGG;
-        if (strncasecmp("FLAC",string+length-4,4) == 0)
+        if (strncasecmp("FLAC",suffix,4) == 0)
                 code = FORMAT_FLAC;
-        if (strncasecmp("AO",string+length-2,2) == 0)
+        if (strncasecmp("AO",suffix,2) == 0)
                 code = FORMAT_AO;
-    fprintf(stderr,"found format: %d ",code);
 	return code;
 }
 

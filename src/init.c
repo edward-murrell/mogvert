@@ -94,6 +94,7 @@ mog_info mog_initmog(int argc, char* argv[]) {
 		// what option caused it
 		prevarg = (char *)optarg;
 	}
+            
 	fprintf(stderr,"Done!\n");
 	if(show_stats == 1) mog_sumstats(info);
 	return info;
