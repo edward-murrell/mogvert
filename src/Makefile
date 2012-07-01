@@ -3,7 +3,7 @@ STRIP = /usr/bin/strip
 BINARY=mogconvert
 CXX=g++
 LIBS= -lmp3lame -logg -lvorbisfile -lvorbis -lao -lFLAC -lFLAC++
-CXXFLAGS=-O3 -Wall -g -pipe -march=i686 -DHAVE_INTTYPES_H
+CXXFLAGS= -Wall -g -pipe -DHAVE_INTTYPES_H
 OBJS=init.o error.o filehandler.o decoders/ogg.o decoders/flac.o encoders/mp3.o encoders/ao.o mogconvert.o
 BINDIR=/usr/local/
 
@@ -20,7 +20,7 @@ BINDIR=/usr/local/
 all: $(BINARY)
 
 $(BINARY):	$(OBJS)
-	$(CXX) $(CXXFLAGS) $(LIBS) -o $(BINARY) $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(BINARY) $(OBJS) $(LIBS)
 
 install: all
 	$(STRIP) $(BINARY)
