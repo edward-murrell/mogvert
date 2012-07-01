@@ -25,12 +25,13 @@ int ogg_decoder::decode(unsigned char &wave_buffer)
 {
 	int returnvar = 0;
 
+//e xtern long ov_read(OggVorbis_File *vf,char *buffer,int length,int bigendianp,int word,int sgned,int *bitstream)
     // TODO - explain what the various options passed to ov_read are
 	/* According to the API, arg 7 should be a 0 (unsigned char) - Don't, bad things happen */
     #ifdef _BIG_ENDIAN
-		returnvar = ov_read(&ogghandle, (char *) &wave_buffer, WAVE_BUFFER_SIZE, 1, 2, 1, 0);
+		returnvar = ov_read(&ogghandle, (char *) &wave_buffer, WAVE_BUFFER_SIZE, 1, 2, 1, bitstream);
     #else
-		returnvar = ov_read(&ogghandle, (char *) &wave_buffer, WAVE_BUFFER_SIZE, 0, 2, 1, 0);
+		returnvar = ov_read(&ogghandle, (char *) &wave_buffer, WAVE_BUFFER_SIZE, 0, 2, 1, bitstream);
     #endif
 
 	// TODO, ugly, but working hack.
