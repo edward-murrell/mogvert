@@ -41,7 +41,7 @@ char get_letter() {
 }
 
 int check_encoder(const char *encoder) {
-	char *encoders[] = { "mp3","ao" };
+	const char *encoders[] = { "mp3","ao" };
 	int i = 0;
 	for(i = 0; i < NUM_ENCODERS; i++) {
 		if(strcasecmp(encoder,encoders[i])==0) break;
@@ -52,7 +52,7 @@ int check_encoder(const char *encoder) {
 
 
 int check_decoder(const char *decoder) {
-	char *decoders[] = { "ogg","flac" };
+	const char *decoders[] = { "ogg","flac" };
 	int i = 0;
 	for(i = 0; i < NUM_DECODERS; i++) {
 		if(strcasecmp(decoder,decoders[i])==0) break;
