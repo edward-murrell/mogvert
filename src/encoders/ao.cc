@@ -5,6 +5,7 @@ int ao_encoder::init(struct generic_file_info &gfi, struct encoding_options &enc
 	printf("Playing %s by %s (%s)...\n",gfi.title,gfi.artist,gfi.album);
 	ao_initialize();
 	out_driver_id = ao_default_driver_id();
+    //out_driver_id = ao_driver_id("pulse"); // To force a drive, do this
 
 	ao_sample_format out_format;
 		out_format.bits        = 16;
