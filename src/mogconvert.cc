@@ -43,6 +43,7 @@ int main(int argc,  char* argv[])
 
 // == Init the decoder
 
+    coder_info dec_info,enc_info;
     if (info.dec_module == NULL)    
         decode_format = get_code(info.input_file);
 	else if(check_decoder(info.dec_module))
@@ -54,9 +55,7 @@ int main(int argc,  char* argv[])
 		fprintf(stderr,"Failed to detect input format.\n");
 		exit(1); // TODO - Need proper (and documented) exit codes
 	}
-    
-	fprintf(stderr,"\nInitilizing decoding engine... %d\n",decode_format);
-    
+        
 	switch (decode_format) {
 	case FORMAT_OGG:
 		decoder_ob = new ogg_decoder(); break;
@@ -67,6 +66,8 @@ int main(int argc,  char* argv[])
 		exit(1);
 	}
 
+    decoder_ob->get_coder_info(&dec_info);
+    fprintf(stderr,"\nInitilizing decoding engine... %s\n",dec_info.longname);
 	if (! decoder_ob->init(inputfile))
 	{
 		fprintf(stderr,"Failed to open input file.\n");
@@ -87,7 +88,6 @@ int main(int argc,  char* argv[])
    		fprintf(stderr,"Unknown output format.\n");
         exit(1);
     }
-
 
 
 	switch (encode_format) {
