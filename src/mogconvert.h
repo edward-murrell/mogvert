@@ -31,6 +31,14 @@ struct generic_file_info {
 	int total_tracks;
 };
 
+struct coder_info {
+	const char* shortname;
+	const char* longname;
+    const char* suffix;
+    bool decoder;
+    bool encoder;
+};
+
 struct encoding_options {
 	int bitrate;
 };

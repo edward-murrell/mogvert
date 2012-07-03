@@ -95,6 +95,8 @@ void ogg_decoder::ogg_id_extract(char *from[], char *output[], char test[])
 		}
 }
 
-char* ogg_decoder::get_decoder_name() {
-    return "ogg";
+void ogg_decoder::get_coder_info(coder_info *info) {
+    info->shortname = "Ogg";
+    info->longname = "Ogg Vorbis decoder";
+    info->suffix = "ogg";
 }

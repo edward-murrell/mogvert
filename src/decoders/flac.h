@@ -39,7 +39,7 @@ FILE *inputfile;
   public:
 bool test(FILE *inputfile);
 bool init(FILE *inputfile);
-char* get_decoder_name();
+static void get_coder_info(coder_info *info);
 void getgfi(struct generic_file_info &gfi);
 int decode(unsigned char &wave_buffer);
 int close(unsigned char &wave_buffer);

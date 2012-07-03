@@ -53,8 +53,10 @@ flac_decoder::~flac_decoder()
 	// yay.
 }
 
-char* flac_decoder::get_decoder_name() {
-    return "ogg";
+void flac_decoder::get_coder_info(coder_info *info) {
+    info->shortname = "FLAC";
+    info->longname = "FLAC Decoder";
+    info->suffix = "flac";
 }
 
 
