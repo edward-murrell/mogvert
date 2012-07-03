@@ -169,8 +169,7 @@ struct flac_wave_buffer_node* Stream_Ext::get_node()
 
 void Stream_Ext::metadata_callback (const::FLAC__StreamMetadata *metadata)
 {
-		printf("got meta\n");
-		printf("fgoo: %u\n",metadata->type);
+		printf("Internal FLAC metadata type: %u\n",metadata->type);
 }
 void Stream_Ext::error_callback (::FLAC__StreamDecoderErrorStatus status)
 {
