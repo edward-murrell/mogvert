@@ -78,13 +78,17 @@ int main(int argc,  char* argv[])
 // == Init the encoder
 
 	// check if the encoder is supported
-    if (info.dec_module == NULL)    
+    if (info.enc_module == NULL) { // Guess encoder from output file extension
         encode_format = get_code(info.output_file);
+    }
 	else if(check_encoder(info.enc_module)) {
-		encode_format = get_code(info.enc_module);
+		encode_format = get_code(info.enc_module);  // Get encoder from -e arg
 	} else {
    		fprintf(stderr,"Unknown output format.\n");
+        exit(1);
     }
+
+
 
 	switch (encode_format) {
 	case FORMAT_MP3:

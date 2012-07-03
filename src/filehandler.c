@@ -11,8 +11,9 @@
 // TODO: More importantly, fix the code that passes in an uninitialised value for string
 //	and causes a segfault.
 int get_code(const char *string) {
-    
-    const char* suffix = strrchr ( string , '.')+1;
+    const char* suffix = strrchr ( string , '.')+1; // TODO, seperate out finding the extensions into it's own function
+    if ((int)suffix == 0x1) // This is wrong, it's meant to return NULL
+        suffix = string; // It's not a file extension
 
 	int code = FORMAT_UNDEFINED; // Default
         if (strncasecmp("WAV",suffix,3) == 0)
@@ -46,7 +47,7 @@ int check_encoder(const char *encoder) {
 		if(strcasecmp(encoder,encoders[i])==0) break;
 		if(i == NUM_ENCODERS-1 && strcasecmp(encoder,encoders[i]) != 0) invalid_encoder(encoder); // <-- WTF Does this do?
 	}
-	return 1;
+	return get_code(encoder);
 }
 
 
