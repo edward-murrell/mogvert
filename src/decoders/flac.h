@@ -3,7 +3,9 @@
 
 #include "../mogconvert.h"
 #include "../decoder_objects.h"
+#include <FLAC++/metadata.h>
 #include <FLAC++/decoder.h>
+
 #include <stdio.h>
 
 

@@ -12,6 +12,7 @@ class ogg_decoder: public decoder {
 void set_file_info(struct generic_file_info *gfi);
 void ogg_id_extract(char *from[], char *output[], char test[]);
 OggVorbis_File ogghandle;
+int *bitstream;
   public:
 bool test(FILE *inputfile);
 bool init(FILE *inputfile);
