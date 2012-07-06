@@ -4,7 +4,7 @@
 #include "mogconvert.h"
 
 class encoder {
-	private:
+  private:
   public:
 virtual int init(struct generic_file_info  &gfi, struct encoding_options &encodeop) =0 ;
 virtual int encode(struct generic_file_info &gfi, unsigned char &wave_buffer, int wave_buffer_size, unsigned char &encoded_buffer)=0 ;
