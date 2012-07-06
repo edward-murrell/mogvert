@@ -5,12 +5,14 @@
 #include <stdio.h>
 
 class decoder {
+protected:
+    coder_info local_coder_info;
 public:
 	virtual bool test(FILE *inputfile)=0;
 	virtual bool init(FILE *inputfile)=0;
 	// it'd be nice if this function was actually
 	// virtual struct generic_file_info& getgfi();
-    static void get_coder_info(coder_info *info) {}; // TODO - consider being smartypants and add get* methods to return text inside static per class coder_info
+    virtual coder_info* get_coder_info() { return &this->local_coder_info; }; // This should just be a simple function that doesn't need to get overridden
 	virtual void getgfi(struct generic_file_info &gfi)=0;
 	virtual int decode(unsigned char &wave_buffer)=0 ;		// This function returns number of BYTES
 	virtual int close(unsigned char &wave_buffer)=0 ;

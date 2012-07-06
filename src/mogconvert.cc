@@ -43,7 +43,7 @@ int main(int argc,  char* argv[])
 
 // == Init the decoder
 
-    coder_info dec_info,enc_info;
+    coder_info* dec_info,enc_info;
     if (info.dec_module == NULL)    
         decode_format = get_code(info.input_file);
 	else if(check_decoder(info.dec_module))
@@ -66,8 +66,8 @@ int main(int argc,  char* argv[])
 		exit(1);
 	}
 
-    decoder_ob->get_coder_info(&dec_info);
-    fprintf(stderr,"\nInitilizing decoding engine... %s\n",dec_info.longname);
+    dec_info = decoder_ob->get_coder_info();
+    fprintf(stderr,"\nInitilizing decoding engine... %s\n",dec_info->longname);
 	if (! decoder_ob->init(inputfile))
 	{
 		fprintf(stderr,"Failed to open input file.\n");

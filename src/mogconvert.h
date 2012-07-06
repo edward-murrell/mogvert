@@ -32,9 +32,9 @@ struct generic_file_info {
 };
 
 struct coder_info {
-	const char* shortname;
-	const char* longname;
-    const char* suffix;
+	const char * shortname;
+	const char * longname;
+    const char * suffix;
     bool decoder;
     bool encoder;
 };

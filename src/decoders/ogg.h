@@ -14,9 +14,9 @@ void ogg_id_extract(char *from[], char *output[], char test[]);
 OggVorbis_File ogghandle;
 int *bitstream;
   public:
+ogg_decoder();
 bool test(FILE *inputfile);
 bool init(FILE *inputfile);
-static void get_coder_info(coder_info *info);
 void getgfi(struct generic_file_info &gfi);
 int decode(unsigned char &wave_buffer);
 int close(unsigned char &wave_buffer);

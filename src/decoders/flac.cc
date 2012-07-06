@@ -1,5 +1,10 @@
 #include "flac.h"
 
+flac_decoder::flac_decoder() {
+    coder_info local_coder_init = {"FLAC","FLAC decoder","flac"};
+    local_coder_info = local_coder_init; // Seem silly?
+}
+
 bool flac_decoder::test(FILE *inputfile)
 {
 	return true;
@@ -15,6 +20,7 @@ void flac_decoder::getgfi(struct generic_file_info &gfi)
 {
 	return;
 }
+
 int flac_decoder::decode(unsigned char &wave_buffer)
 {
 	flacobject.process_single();	// TODO - Return some crap if this dies.
@@ -52,13 +58,6 @@ flac_decoder::~flac_decoder()
 {
 	// yay.
 }
-
-void flac_decoder::get_coder_info(coder_info *info) {
-    info->shortname = "FLAC";
-    info->longname = "FLAC Decoder";
-    info->suffix = "flac";
-}
-
 
 // ====== Implementations of protected virtual functions here =====
 FLAC__StreamDecoderReadStatus Stream_Ext::read_callback (FLAC__byte buffer[], unsigned *bytes)

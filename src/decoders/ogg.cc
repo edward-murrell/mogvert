@@ -1,5 +1,10 @@
 #include "ogg.h"
 
+ogg_decoder::ogg_decoder() {
+    coder_info local_coder_init = {"Ogg","Xiph Ogg Vorbis decoder","ogg"};
+    local_coder_info = local_coder_init;
+}
+
 bool ogg_decoder::test(FILE *inputfile)	// This should be a static method.
 {
 	if (ov_test(inputfile,&ogghandle,NULL,0) == 0)
@@ -93,10 +98,4 @@ void ogg_decoder::ogg_id_extract(char *from[], char *output[], char test[])
 		{	// strncpy(dest, source, #_of_chars);
 			strncpy(*output, *from+test_length,from_length-test_length);
 		}
-}
-
-void ogg_decoder::get_coder_info(coder_info *info) {
-    info->shortname = "Ogg";
-    info->longname = "Ogg Vorbis decoder";
-    info->suffix = "ogg";
 }
