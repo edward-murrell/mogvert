@@ -10,17 +10,19 @@ int  mp3_encoder::init(struct generic_file_info &gfi, struct encoding_options &e
 	fprintf(stderr,"Creating mp3 for %s by %s (%s)...\n",gfi.title,gfi.artist,gfi.album);// Remove this at some point?
 
 	lamehandle = lame_init();
-    // TODO - Check if lamehandle is NULL, and throw a shit if it is.
+    if (lamehandle == NULL)
+        return false;
 
 	lame_set_brate(lamehandle, encodeop.bitrate);
-	lame_init_params(lamehandle);
+	if (-1 == lame_init_params(lamehandle))
+        return false;
 	id3tag_init(lamehandle);
 	id3tag_add_v2(lamehandle);
 
 	id3tag_set_title(lamehandle, gfi.title);
 	id3tag_set_artist(lamehandle, gfi.artist);
 	id3tag_set_album(lamehandle, gfi.album);
-	return 0;
+	return true;
 }
 
 int  mp3_encoder::encode(struct generic_file_info &gfi, unsigned char &wave_buffer, int wave_buffer_size, unsigned char &encoded_buffer)
