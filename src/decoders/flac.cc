@@ -24,7 +24,7 @@ void flac_decoder::getgfi(struct generic_file_info &gfi)
 int flac_decoder::decode(unsigned char &wave_buffer)
 {
 	flacobject.process_single();	// TODO - Return some crap if this dies.
-//	flacobject.process_until_end_of_stream();	// TODO - Return some crap if this dies.
+//	flacobject.process_until_end_of_stream();	// Useful if/when doing threading
 	flac_wave_buffer_node *node_read = flacobject.get_node();
 	if (node_read == NULL && flacobject.get_state() == FLAC__STREAM_DECODER_READ_FRAME  )
 	{		return 0;

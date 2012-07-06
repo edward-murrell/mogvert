@@ -17,7 +17,7 @@ virtual int close(struct generic_file_info &gfi, unsigned char &wave_buffer, int
 
 #include "encoders/mp3.h"
 #include "encoders/ao.h"
-// You can all shut up, this works.
+// TODO - Spin this out into dynamically loaded libraries at some point
 
 #endif /* _MOGENCODEOBJECTS_H_ */
 

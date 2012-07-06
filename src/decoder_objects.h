@@ -22,7 +22,5 @@ public:
 #include "decoders/ogg.h"
 //#include "decoders/cdda.h"
 
-// You can all shut up, this works.
-
 #endif /* _MOGDECODEOBJECTS_H_ */
 
