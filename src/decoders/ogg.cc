@@ -63,7 +63,7 @@ void ogg_decoder::set_file_info(struct generic_file_info *gfi)
 	for(i=0;i<inputcomment->comments;i++)
 	{
 		fprintf(stderr,"%d: ",i);
-		fprintf(stderr,inputcomment->user_comments[i]);
+		fprintf(stderr,"%s",inputcomment->user_comments[i]);
 		fprintf(stderr,"\n");
 
 		// FIXME - This is kinda ugly, can we clean this up some?
