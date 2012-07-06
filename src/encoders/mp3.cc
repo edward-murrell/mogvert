@@ -1,5 +1,10 @@
 #include "mp3.h"
 
+mp3_encoder::mp3_encoder() {
+    coder_info local_coder_init = {"MP3","LAME MP3 Encoder","mp3",false,true};
+    local_coder_info = local_coder_init;
+}
+
 int  mp3_encoder::init(struct generic_file_info &gfi, struct encoding_options &encodeop)
 {
 	fprintf(stderr,"Creating mp3 for %s by %s (%s)...\n",gfi.title,gfi.artist,gfi.album);// Remove this at some point?

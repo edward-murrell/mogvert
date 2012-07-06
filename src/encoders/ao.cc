@@ -1,5 +1,10 @@
 #include "ao.h"
 
+ao_encoder::ao_encoder() {
+    coder_info local_coder_init = {"AO","Libao Audio Output library",""};
+    local_coder_info = local_coder_init;
+}
+
 int ao_encoder::init(struct generic_file_info &gfi, struct encoding_options &encodeop)
 {
 	printf("Playing %s by %s (%s)...\n",gfi.title,gfi.artist,gfi.album);
