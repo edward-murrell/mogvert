@@ -43,7 +43,7 @@ int main(int argc,  char* argv[])
 
 // == Init the decoder
 
-    coder_info* dec_info,enc_info;
+    coder_info* dec_info, *enc_info;
     if (info.dec_module == NULL)    
         decode_format = get_code(info.input_file);
 	else if(check_decoder(info.dec_module))
@@ -99,7 +99,8 @@ int main(int argc,  char* argv[])
 		fprintf(stderr, "Invalid encoder. This is a bug!\n");
 		exit(1);
 	}
-	fprintf(stderr,"\nInitilizing encoding engine...\n");
+    enc_info = encoder_ob->get_coder_info();
+	fprintf(stderr,"\nInitilizing encoding engine... %s\n",enc_info->longname);
 	encoder_ob->init(gfi, encodeop);
 
 // DECODING STARTS HERE ======================================================
