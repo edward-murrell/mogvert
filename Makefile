@@ -1,7 +1,7 @@
 SRCDIR = src
 MANDIR = man
 
-.PHONY: all install run clean
+.PHONY: all install run clean test
 
 all:
 	cd $(SRCDIR); make;
@@ -10,6 +10,9 @@ all:
 install: all
 	cd $(SRCDIR); make install;
 	cd $(MANDIR); make install;
+
+test:	all
+	cd $(SRCDIR); make test
 
 run:
 	cd $(SRCDIR); make run;
