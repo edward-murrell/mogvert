@@ -43,6 +43,7 @@ fi
 printf "Checking host system type... "
 ARCH=`uname -m 2>/dev/null`
 if [ $ARCH == "ppc" ]; then ARCH=powerpc; fi;
+if [ $ARCH == "x86_64" ]; then ARCH=core2; fi;
 CXXFLAGS="$CXXFLAGS -march=$ARCH"
 printf "$ARCH\n"
 
