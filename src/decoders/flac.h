@@ -19,7 +19,7 @@ typedef struct flac_wave_buffer_node {
 
 class Stream_Ext: public FLAC::Decoder::Stream {
 	private:
-FLAC__StreamDecoderReadStatus read_callback (FLAC__byte buffer[], unsigned *bytes);
+FLAC__StreamDecoderReadStatus read_callback (FLAC__byte buffer[], size_t *bytes);
 FLAC__StreamDecoderWriteStatus write_callback (const::FLAC__Frame *frame, const FLAC__int32 *const buffer[]);
 flac_wave_buffer_node *node_top;
 flac_wave_buffer_node *node_tail;
