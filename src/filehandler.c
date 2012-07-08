@@ -4,29 +4,35 @@
 #include <stdlib.h>
 //#include <getopt.h> // the standard getopt call is in unistd.h
 #include <stdio.h>
-#include <string.h>
+#include <strings.h>
 
 
 // TODO: Get the length of string to be passed in, too
 // TODO: More importantly, fix the code that passes in an uninitialised value for string
 //	and causes a segfault.
-int get_code(const char *string) {
-    const char* suffix = strrchr ( string , '.')+1; // TODO, seperate out finding the extensions into it's own function
-    if ((int)suffix == 0x1) // This is wrong, it's meant to return NULL
-        suffix = string; // It's not a file extension
 
-	int code = FORMAT_UNDEFINED; // Default
-        if (strncasecmp("WAV",suffix,3) == 0)
-                code = FORMAT_WAV;
-        if (strncasecmp("MP3",suffix,3) == 0)
-                code = FORMAT_MP3;
-        if (strncasecmp("OGG",suffix,3) == 0)
-                code = FORMAT_OGG;
-        if (strncasecmp("FLAC",suffix,4) == 0)
-                code = FORMAT_FLAC;
-        if (strncasecmp("AO",suffix,2) == 0)
-                code = FORMAT_AO;
-	return code;
+
+
+int get_code(const char *arg) {
+	const char* suffix = strrchr ( arg , '.'); // TODO, seperate out finding the extensions into it's own function
+	if (suffix == NULL) // strrchr: http://www.cplusplus.com/reference/clibrary/cstring/strrchr/
+		suffix = arg; // It's not a file extension
+	if (suffix[0] == '.'){
+		suffix++;
+	}
+
+	if (strcasecmp("WAV",suffix) == 0)
+		return FORMAT_WAV;
+	else if (strcasecmp("MP3",suffix) == 0)
+		return FORMAT_MP3;
+	else if (strcasecmp("OGG",suffix) == 0)
+		return FORMAT_OGG;
+	else if (strcasecmp("FLAC",suffix) == 0)
+		return FORMAT_FLAC;
+	else if (strcasecmp("AO",suffix) == 0)
+		return FORMAT_AO;
+
+	return FORMAT_UNDEFINED; // Default return code;
 }
 
 char get_letter() {
