@@ -60,7 +60,7 @@ flac_decoder::~flac_decoder()
 }
 
 // ====== Implementations of protected virtual functions here =====
-FLAC__StreamDecoderReadStatus Stream_Ext::read_callback (FLAC__byte buffer[], unsigned *bytes)
+FLAC__StreamDecoderReadStatus Stream_Ext::read_callback (FLAC__byte buffer[], size_t *bytes)
 {	// Important, bytes contains the maximum number of bytes allowed to be read.
 	int buffer_size = INPUT_BUFFER_SIZE;
 	if (*bytes < INPUT_BUFFER_SIZE)
