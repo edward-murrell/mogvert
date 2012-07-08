@@ -51,15 +51,11 @@ int ogg_decoder::close(unsigned char &wave_buffer)
 // Private methods for handling tags here
 
 void ogg_decoder::set_file_info(struct generic_file_info *gfi)
-{	// Don't forget to clean this up, most of it isn't needed except for debugging.
-	fprintf(stderr,"\nStarting tag detection...\n");
-
-	vorbis_comment *inputcomment;
+{	vorbis_comment *inputcomment;
 	inputcomment = ov_comment(&ogghandle,-1);
 
 	for(int i=0;i<inputcomment->comments;i++) // title, artist, album = 
 	{
-		fprintf(stderr,"\n%s\n",inputcomment->user_comments[i]);
 		char * tag_delim = strchr(inputcomment->user_comments[i],'=');
 		int tag_key_l = (int)(tag_delim - inputcomment->user_comments[i]);
 		char * tag_key = new char[tag_key_l];
@@ -67,24 +63,20 @@ void ogg_decoder::set_file_info(struct generic_file_info *gfi)
 		strncpy(tag_key,inputcomment->user_comments[i],tag_key_l);
         tag_delim++;
         int tag_value_l = strlen(tag_delim);
-        printf("{%s}(%i) => {%s}(%i)\n",tag_key,tag_key_l,tag_delim,tag_value_l);
-
-		       if (strcmp(tag_key,"title")) {
+ 
+		       if (strcmp(tag_key,"title") == 0) {
             strncpy(gfi->title,tag_delim,tag_value_l);
             gfi->title[tag_value_l] = '\0';
-        } else if (strcmp(tag_key,"arist")) {
+        } else if (strcmp(tag_key,"artist") == 0) {
             strncpy(gfi->artist,tag_delim,tag_value_l);
             gfi->artist[tag_value_l] = '\0';
-        } else if (strcmp(tag_key,"album")) {
+        } else if (strcmp(tag_key,"album") == 0) {
             strncpy(gfi->album,tag_delim,tag_value_l);
             gfi->album[tag_value_l] = '\0';
-        } else if (strcmp(tag_key,"comment")) {
+        } else if (strcmp(tag_key,"comment") == 0) {
             strncpy(gfi->comment,tag_delim,tag_value_l);
             gfi->comment[tag_value_l] = '\0';
         }        
 	}
-    fprintf(stderr,"{%s} by {%s} from {%s}\n",gfi->title,gfi->artist,gfi->album);
-    fprintf(stderr,"User comment {%s}\n",gfi->comment);
-	fprintf(stderr,"Tag detection completed...\n\n");
 }
 
