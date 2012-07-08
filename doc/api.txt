@@ -1,0 +1,30 @@
+## Eventual goal of the mogvert API ##
+
+## Simple, blocking, default. ##
+mogvert mog = new mogvert('input.flac','output.mp3');
+mog->go();
+mogvert_status status = mog->get_status(); # (optional)
+
+## Simple, non blocking, status (inefficant) ##
+mogvert mog = new mogvert('input.flac','output.mp3');
+mog->set_finished_callback(void);
+
+do {
+} while (mog->get_status().completed != MOG_STATE_FINISHED);
+
+## Simple, blocking, set options for encoding, with detected encoder ##
+mogvert mog = new mogvert('input.flac','output.mp3');
+mogvert_encoder enc = mog->get_encoder();
+enc->set_bit_rate(192); ??
+mog->go();
+
+## Simple, blocking, set options for encoding, with specified encoder ##
+mogvert mog = new mogvert('input.flac','output.mp3');
+mogvert_encoder enc = new mogvert_encoder_ogg();
+mogvert_response* resp;
+resp = enc->set_bit_rate(192);
+// Do some detection of setting a response here.
+resp = mog->set_encoder(enc);
+// Check if the encoder choked here.
+mog->go();
+

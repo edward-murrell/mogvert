@@ -1,0 +1,13 @@
+## Eventual goal of the mogvert CLI interface ##
+
+mogvert -i foo.bar -e mp3 --encode-bitrate 192 --encode-js true -d flac --decode-track-left 0 --decode-track-right 1
+
+
+--(decode|encode|tag)-(.+) $2 is passed to the decoding,encoding, or tagging engine
+
+eg; mogvert --decode-bitrate 256 will pass bitrate,256 to the decode engine, probably via decode_object->set_option(key,value), where key/value = bitrate/256
+
+
+0|false|no|disable = FALSE
+1|false|yes|enable = TRUE
+
