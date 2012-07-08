@@ -55,47 +55,36 @@ void ogg_decoder::set_file_info(struct generic_file_info *gfi)
 	fprintf(stderr,"\nStarting tag detection...\n");
 
 	vorbis_comment *inputcomment;
-	inputcomment = ov_comment(&ogghandle,-1);	// produces warning because ov_comment is C++ and handles by 
-	char cut_string[STRINGS_SIZE];
-	char *test_string;
+	inputcomment = ov_comment(&ogghandle,-1);
 
-	int i = 0;
-	for(i=0;i<inputcomment->comments;i++)
+	for(int i=0;i<inputcomment->comments;i++) // title, artist, album = 
 	{
-		fprintf(stderr,"%d: ",i);
-		fprintf(stderr,"%s",inputcomment->user_comments[i]);
-		fprintf(stderr,"\n");
+		fprintf(stderr,"\n%s\n",inputcomment->user_comments[i]);
+		char * tag_delim = strchr(inputcomment->user_comments[i],'=');
+		int tag_key_l = (int)(tag_delim - inputcomment->user_comments[i]);
+		char * tag_key = new char[tag_key_l];
+		tag_key[tag_key_l] = '\0';
+		strncpy(tag_key,inputcomment->user_comments[i],tag_key_l);
+        tag_delim++;
+        int tag_value_l = strlen(tag_delim);
+        printf("{%s}(%i) => {%s}(%i)\n",tag_key,tag_key_l,tag_delim,tag_value_l);
 
-		// FIXME - This is kinda ugly, can we clean this up some?
-		strcpy(cut_string,"title=");
-		test_string = gfi->title;
-		if ( strncmp( inputcomment->user_comments[i], cut_string, 6) == 0 )
-			ogg_id_extract(&inputcomment->user_comments[i],&test_string,cut_string);
-
-		strcpy(cut_string,"artist=");
-		test_string = gfi->artist;
-		if ( strncmp(inputcomment->user_comments[i], "artist=", 7) == 0 )
-			ogg_id_extract(&inputcomment->user_comments[i],&test_string,cut_string);
-
-		strcpy(cut_string,"album=");
-		test_string = gfi->album;
-		if ( strncmp(inputcomment->user_comments[i], "album=", 6) == 0 )
-			ogg_id_extract(&inputcomment->user_comments[i],&test_string,cut_string);
+		       if (strcmp(tag_key,"title")) {
+            strncpy(gfi->title,tag_delim,tag_value_l);
+            gfi->title[tag_value_l] = '\0';
+        } else if (strcmp(tag_key,"arist")) {
+            strncpy(gfi->artist,tag_delim,tag_value_l);
+            gfi->artist[tag_value_l] = '\0';
+        } else if (strcmp(tag_key,"album")) {
+            strncpy(gfi->album,tag_delim,tag_value_l);
+            gfi->album[tag_value_l] = '\0';
+        } else if (strcmp(tag_key,"comment")) {
+            strncpy(gfi->comment,tag_delim,tag_value_l);
+            gfi->comment[tag_value_l] = '\0';
+        }        
 	}
+    fprintf(stderr,"{%s} by {%s} from {%s}\n",gfi->title,gfi->artist,gfi->album);
+    fprintf(stderr,"User comment {%s}\n",gfi->comment);
 	fprintf(stderr,"Tag detection completed...\n\n");
 }
 
-// Tests if test makes up the first part of scan, and if so, copies the rest to output
-// Could cause major issues if some Oggs don't properly null terminate their strings.
-// Probably need to tack on some string lengths vars somewhere.
-// Yes, the language (from, output, test) sucks, suggest something better.
-void ogg_decoder::ogg_id_extract(char *from[], char *output[], char test[])
-{
-	int test_length = strlen(test);
-	int from_length = strlen(*from);
-	if (from_length > test_length)		// Eg, if the ogg string is longer than what we're testing for...
-		if (strncmp(test,*from,test_length) == 0)	// If the first n (size of test) chars of scan and test match...
-		{	// strncpy(dest, source, #_of_chars);
-			strncpy(*output, *from+test_length,from_length-test_length);
-		}
-}
