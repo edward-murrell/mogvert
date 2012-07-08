@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <typeinfo>
+const char* audiotype[] = {"undefined", "wav", "mp3", "ogg", "flac", "ao"};
 
 int main(int argc,  char* argv[])
 {
@@ -39,19 +40,18 @@ int main(int argc,  char* argv[])
 
 // == Init the decoder
 
-    coder_info* dec_info, *enc_info;
-    if (info.dec_module == NULL)    
-        decode_format = get_code(info.input_file);
-	else if(check_decoder(info.dec_module))
-    {
+	coder_info* dec_info, *enc_info;
+	if (info.dec_module == NULL || strcmp(info.dec_module,"autodetect") == 0 ) {
+		decode_format = get_code(info.input_file);
+		info.dec_module = audiotype[decode_format];
+		printf("Detected decode format as %s\n",info.dec_module);
+	} else if (check_decoder(info.dec_module)) {
 		decode_format = get_code(info.dec_module);
-	}
-	else
-	{
+	} else {
 		fprintf(stderr,"Failed to detect input format.\n");
 		exit(1); // TODO - Need proper (and documented) exit codes
 	}
-        
+
 	switch (decode_format) {
 	case FORMAT_OGG:
 		decoder_ob = new ogg_decoder(); break;
@@ -64,26 +64,26 @@ int main(int argc,  char* argv[])
 
     dec_info = decoder_ob->get_coder_info();
     fprintf(stderr,"\nInitilizing decoding engine... %s\n",dec_info->longname);
-	if (! decoder_ob->init(inputfile))
-	{
+	if (! decoder_ob->init(inputfile)) {
 		fprintf(stderr,"Failed to open input file.\n");
 		exit(1); // TODO - Need proper (and documented) exit codes
 	}
 	decoder_ob->getgfi(gfi);
-	
+
 
 // == Init the encoder
 
 	// check if the encoder is supported
-    if (info.enc_module == NULL) { // Guess encoder from output file extension
-        encode_format = get_code(info.output_file);
-    }
-	else if(check_encoder(info.enc_module)) {
+	if (info.enc_module == NULL || strcmp(info.enc_module,"autodetect") == 0) { // Guess encoder from output file extension
+		encode_format = get_code(info.output_file);
+		info.enc_module = audiotype[encode_format];
+		printf("Set encode format to %s\n",info.enc_module);
+	} else if (check_encoder(info.enc_module)) {
 		encode_format = get_code(info.enc_module);  // Get encoder from -e arg
 	} else {
    		fprintf(stderr,"Unknown output format.\n");
-        exit(1);
-    }
+		exit(1);
+	}
 
 
 	switch (encode_format) {
@@ -95,7 +95,7 @@ int main(int argc,  char* argv[])
 		fprintf(stderr, "Invalid encoder. This is a bug!\n");
 		exit(1);
 	}
-    enc_info = encoder_ob->get_coder_info();
+	enc_info = encoder_ob->get_coder_info();
 	fprintf(stderr,"\nInitilizing encoding engine... %s\n",enc_info->longname);
 	encoder_ob->init(gfi, encodeop);
 
