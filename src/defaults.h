@@ -5,8 +5,8 @@
 These defaults are used if they aren't overridden at compile-time with -D
 *********************************************/
 
-#define _DEFAULT_DECODER "wav"
-#define _DEFAULT_ENCODER "mp3"
+#define _DEFAULT_DECODER "autodetect"
+#define _DEFAULT_ENCODER "autodetect"
 #define _DEFAULT_ENCODER_BITRATE 128
 
 
