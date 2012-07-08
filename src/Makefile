@@ -22,7 +22,7 @@ OBJ_TEST=test.o
 
 all: $(BINARY)
 
-$(BINARY):	$(OBJS)
+$(BINARY):	$(OBJ_BIN) $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(BINARY) $(OBJS) $(OBJ_BIN) $(LIBS)
 
 testbin: $(OBJ_TEST) $(OBJS)
