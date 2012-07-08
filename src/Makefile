@@ -1,6 +1,6 @@
 INSTALL = /usr/bin/install
 STRIP = /usr/bin/strip
-BINARY=mogconvert
+BINARY=mogvert
 CXX=g++
 LIBS= -lmp3lame -logg -lvorbisfile -lvorbis -lao -lFLAC -lFLAC++
 CXXFLAGS= -Wall -g -pipe -DHAVE_INTTYPES_H
