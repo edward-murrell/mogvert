@@ -27,6 +27,7 @@ mog_info mog_initmog(int argc, char* argv[]) {
 	info.input_file     = 	"/dev/stdin";
 	info.output_file    = 	"/dev/stdout";
 	info.copy_tags	    =   1;
+	info.dec_module     = 	DEFAULT_DECODER;
 	info.enc_module     = 	DEFAULT_ENCODER;
 	info.bitrate	    = 	DEFAULT_ENCODER_BITRATE; 
 	info.reencode_time  =  -1;
