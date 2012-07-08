@@ -10,9 +10,6 @@
 // TODO: Get the length of string to be passed in, too
 // TODO: More importantly, fix the code that passes in an uninitialised value for string
 //	and causes a segfault.
-
-
-
 int get_code(const char *arg) {
 	const char* suffix = strrchr ( arg , '.'); // TODO, seperate out finding the extensions into it's own function
 	if (suffix == NULL) // strrchr: http://www.cplusplus.com/reference/clibrary/cstring/strrchr/
