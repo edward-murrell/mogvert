@@ -18,7 +18,7 @@ bool flac_decoder::init(FILE *inputfile)
 }
 void flac_decoder::getgfi(struct generic_file_info &gfi)
 {
-	return;
+	return flacobject.getgfi(gfi);
 }
 
 int flac_decoder::decode(unsigned char &wave_buffer)
@@ -170,8 +170,11 @@ struct flac_wave_buffer_node* Stream_Ext::get_node()
 
 void Stream_Ext::metadata_callback (const::FLAC__StreamMetadata *metadata)
 {
-		printf("Internal FLAC metadata type: %u\n",metadata->type);
+        if (metadata->type != FLAC__METADATA_TYPE_VORBIS_COMMENT)
+            return; // TODO, add support for other metadata types
+        this->metadata = FLAC__metadata_object_clone(metadata);
 }
+
 void Stream_Ext::error_callback (::FLAC__StreamDecoderErrorStatus status)
 {
 	if (status == FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC)
@@ -189,4 +192,44 @@ Stream_Ext::Stream_Ext()
 {
 	node_top = NULL;
 	node_tail = NULL;
+    this->metadata = NULL;
 }
+
+void Stream_Ext::getgfi(struct generic_file_info &gfi) {
+    if (metadata == NULL)
+        return;
+	FLAC__StreamMetadata_VorbisComment comments = metadata->data.vorbis_comment;
+
+	for(uint i=0;i<comments.num_comments;i++) // title, artist, album = 
+	{
+        FLAC__uint32 tag_value_l = comments->length; // EKM working, this isn't going to work because different entries one after the other
+		char * tag_delim = strchr(comments->user_comments[i],'=');
+		int tag_key_l = (int)(tag_delim - comments->user_comments[i]);
+		char * tag_key = new char[tag_key_l];
+		tag_key[tag_key_l] = '\0';
+		strncpy(tag_key,comments->user_comments[i],tag_key_l);
+        tag_delim++;
+
+ 
+		       if (strcmp(tag_key,"title") == 0) {
+            strncpy(gfi->title,tag_delim,tag_value_l);
+            gfi->title[tag_value_l] = '\0';
+        } else if (strcmp(tag_key,"artist") == 0) {
+            strncpy(gfi->artist,tag_delim,tag_value_l);
+            gfi->artist[tag_value_l] = '\0';
+        } else if (strcmp(tag_key,"album") == 0) {
+            strncpy(gfi->album,tag_delim,tag_value_l);
+            gfi->album[tag_value_l] = '\0';
+        } else if (strcmp(tag_key,"comment") == 0) {
+            strncpy(gfi->comment,tag_delim,tag_value_l);
+            gfi->comment[tag_value_l] = '\0';
+        }        
+	}
+}
+/*
+typedef struct {
+        FLAC__uint32 length;
+        FLAC__byte *entry;
+} FLAC__StreamMetadata_VorbisComment_Entry;
+
+*/
