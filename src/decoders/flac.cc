@@ -170,9 +170,20 @@ struct flac_wave_buffer_node* Stream_Ext::get_node()
 
 void Stream_Ext::metadata_callback (const::FLAC__StreamMetadata *metadata)
 {
-        if (metadata->type != FLAC__METADATA_TYPE_VORBIS_COMMENT)
-            return; // TODO, add support for other metadata types
-        this->metadata = FLAC__metadata_object_clone(metadata);
+        switch (metadata->type) {
+            case FLAC__METADATA_TYPE_STREAMINFO: {
+                const FLAC__StreamMetadata_StreamInfo * stream_info = &metadata->data.stream_info;
+                fprintf(stderr,"Samplerate/bits/channels: %i/%i/%i\n",stream_info->sample_rate,stream_info->bits_per_sample,stream_info->channels);
+                //TODO, turn this into useful information
+            } break;
+            case FLAC__METADATA_TYPE_VORBIS_COMMENT: {
+                this->metadata = FLAC__metadata_object_clone(metadata);
+                fprintf(stderr,"Found Ogg Vorbis type comment.\n");
+            } break;
+            default: {
+                fprintf(stderr,"Unhandled metadata found.\n");
+            }
+        }
 }
 
 void Stream_Ext::error_callback (::FLAC__StreamDecoderErrorStatus status)
@@ -197,7 +208,7 @@ Stream_Ext::Stream_Ext()
 
 void Stream_Ext::getgfi(struct generic_file_info &gfi) {
     if (metadata == NULL)
-        return;
+        return;/*
 	FLAC__StreamMetadata_VorbisComment comments = metadata->data.vorbis_comment;
 
 	for(uint i=0;i<comments.num_comments;i++) // title, artist, album = 
@@ -225,11 +236,5 @@ void Stream_Ext::getgfi(struct generic_file_info &gfi) {
             gfi->comment[tag_value_l] = '\0';
         }        
 	}
+    */
 }
-/*
-typedef struct {
-        FLAC__uint32 length;
-        FLAC__byte *entry;
-} FLAC__StreamMetadata_VorbisComment_Entry;
-
-*/
