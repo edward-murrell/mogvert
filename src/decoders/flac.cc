@@ -12,6 +12,7 @@ bool flac_decoder::test(FILE *inputfile)
 bool flac_decoder::init(FILE *inputfile)
 {
 	flacobject.set_file(inputfile);
+    flacobject.set_metadata_respond_all();
 	flacobject.init();
 	flacobject.process_until_end_of_metadata(); // TODO Check these returns;
 	return true;
@@ -177,7 +178,7 @@ void Stream_Ext::metadata_callback (const::FLAC__StreamMetadata *metadata)
                 //TODO, turn this into useful information
             } break;
             case FLAC__METADATA_TYPE_VORBIS_COMMENT: {
-                this->metadata = FLAC__metadata_object_clone(metadata);
+                this->metadata = new FLAC::Metadata::VorbisComment(metadata);
                 fprintf(stderr,"Found Ogg Vorbis type comment.\n");
             } break;
             default: {
@@ -208,33 +209,22 @@ Stream_Ext::Stream_Ext()
 
 void Stream_Ext::getgfi(struct generic_file_info &gfi) {
     if (metadata == NULL)
-        return;/*
-	FLAC__StreamMetadata_VorbisComment comments = metadata->data.vorbis_comment;
+        return;
 
-	for(uint i=0;i<comments.num_comments;i++) // title, artist, album = 
-	{
-        FLAC__uint32 tag_value_l = comments->length; // EKM working, this isn't going to work because different entries one after the other
-		char * tag_delim = strchr(comments->user_comments[i],'=');
-		int tag_key_l = (int)(tag_delim - comments->user_comments[i]);
-		char * tag_key = new char[tag_key_l];
-		tag_key[tag_key_l] = '\0';
-		strncpy(tag_key,comments->user_comments[i],tag_key_l);
-        tag_delim++;
-
- 
-		       if (strcmp(tag_key,"title") == 0) {
-            strncpy(gfi->title,tag_delim,tag_value_l);
-            gfi->title[tag_value_l] = '\0';
-        } else if (strcmp(tag_key,"artist") == 0) {
-            strncpy(gfi->artist,tag_delim,tag_value_l);
-            gfi->artist[tag_value_l] = '\0';
-        } else if (strcmp(tag_key,"album") == 0) {
-            strncpy(gfi->album,tag_delim,tag_value_l);
-            gfi->album[tag_value_l] = '\0';
-        } else if (strcmp(tag_key,"comment") == 0) {
-            strncpy(gfi->comment,tag_delim,tag_value_l);
-            gfi->comment[tag_value_l] = '\0';
+	for(uint i=0;i<metadata->get_num_comments();i++)
+	{   
+        FLAC::Metadata::VorbisComment::Entry comment = metadata->get_comment(i);
+        const char * tag_key =   comment.get_field_name();
+        const char * tag_value = comment.get_field_value();
+        
+		       if (strcasecmp(tag_key,"title") == 0) {
+            strcpy(gfi.title,tag_value);
+        } else if (strcasecmp(tag_key,"artist") == 0) {
+            strcpy(gfi.artist,tag_value);
+        } else if (strcasecmp(tag_key,"album") == 0) {
+            strcpy(gfi.album,tag_value);
+        } else if (strcasecmp(tag_key,"comment") == 0) {
+            strcpy(gfi.comment,tag_value);
         }        
 	}
-    */
 }
