@@ -64,16 +64,16 @@ void ogg_decoder::set_file_info(struct generic_file_info *gfi)
         tag_delim++;
         int tag_value_l = strlen(tag_delim);
  
-		       if (strcmp(tag_key,"title") == 0) {
+		       if (strcasecmp(tag_key,"title") == 0) {
             strncpy(gfi->title,tag_delim,tag_value_l);
             gfi->title[tag_value_l] = '\0';
-        } else if (strcmp(tag_key,"artist") == 0) {
+        } else if (strcasecmp(tag_key,"artist") == 0) {
             strncpy(gfi->artist,tag_delim,tag_value_l);
             gfi->artist[tag_value_l] = '\0';
-        } else if (strcmp(tag_key,"album") == 0) {
+        } else if (strcasecmp(tag_key,"album") == 0) {
             strncpy(gfi->album,tag_delim,tag_value_l);
             gfi->album[tag_value_l] = '\0';
-        } else if (strcmp(tag_key,"comment") == 0) {
+        } else if (strcasecmp(tag_key,"comment") == 0) {
             strncpy(gfi->comment,tag_delim,tag_value_l);
             gfi->comment[tag_value_l] = '\0';
         }        
