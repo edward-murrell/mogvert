@@ -64,19 +64,36 @@ void ogg_decoder::set_file_info(struct generic_file_info *gfi)
         tag_delim++;
         int tag_value_l = strlen(tag_delim);
  
-		       if (strcmp(tag_key,"title") == 0) {
+        /* This temporary madness will be replaced with a slightly saner
+         * comment object using hash tags at a future date. */
+
+		       if (strcasecmp(tag_key,"title") == 0) {
             strncpy(gfi->title,tag_delim,tag_value_l);
             gfi->title[tag_value_l] = '\0';
-        } else if (strcmp(tag_key,"artist") == 0) {
+        } else if (strcasecmp(tag_key,"artist") == 0) {
             strncpy(gfi->artist,tag_delim,tag_value_l);
             gfi->artist[tag_value_l] = '\0';
-        } else if (strcmp(tag_key,"album") == 0) {
+        } else if (strcasecmp(tag_key,"album") == 0) {
             strncpy(gfi->album,tag_delim,tag_value_l);
             gfi->album[tag_value_l] = '\0';
-        } else if (strcmp(tag_key,"comment") == 0) {
+        } else if (strcasecmp(tag_key,"comment") == 0) {
             strncpy(gfi->comment,tag_delim,tag_value_l);
             gfi->comment[tag_value_l] = '\0';
-        }        
+        } else if (strcasecmp(tag_key,"genre") == 0) {
+            strncpy(gfi->genre,tag_delim,tag_value_l);
+            gfi->genre[tag_value_l] = '\0';  
+        } else if (strcasecmp(tag_key,"date") == 0) {
+            strncpy(gfi->year,tag_delim,tag_value_l);
+            gfi->year[tag_value_l] = '\0';
+        } else if (strcasecmp(tag_key,"year") == 0) {
+            strncpy(gfi->year,tag_delim,tag_value_l);
+            gfi->year[tag_value_l] = '\0';
+        } else if (strcasecmp(tag_key,"tracknumber") == 0) {
+            strncpy(gfi->track,tag_delim,tag_value_l);
+            gfi->track[tag_value_l] = '\0'; 
+        } else {
+            fprintf(stderr,"Decoder: Ogg: Unknown metadata comment '%s'=>'%.*s'\n",tag_key,80,tag_delim);
+        }
 	}
 }
 

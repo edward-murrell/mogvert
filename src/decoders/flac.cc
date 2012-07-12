@@ -12,13 +12,14 @@ bool flac_decoder::test(FILE *inputfile)
 bool flac_decoder::init(FILE *inputfile)
 {
 	flacobject.set_file(inputfile);
+    flacobject.set_metadata_respond_all();
 	flacobject.init();
 	flacobject.process_until_end_of_metadata(); // TODO Check these returns;
 	return true;
 }
 void flac_decoder::getgfi(struct generic_file_info &gfi)
 {
-	return;
+	return flacobject.getgfi(gfi);
 }
 
 int flac_decoder::decode(unsigned char &wave_buffer)
@@ -170,8 +171,22 @@ struct flac_wave_buffer_node* Stream_Ext::get_node()
 
 void Stream_Ext::metadata_callback (const::FLAC__StreamMetadata *metadata)
 {
-		printf("Internal FLAC metadata type: %u\n",metadata->type);
+        switch (metadata->type) {
+            case FLAC__METADATA_TYPE_STREAMINFO: {
+                const FLAC__StreamMetadata_StreamInfo * stream_info = &metadata->data.stream_info;
+                fprintf(stderr,"Samplerate/bits/channels: %i/%i/%i\n",stream_info->sample_rate,stream_info->bits_per_sample,stream_info->channels);
+                //TODO, turn this into useful information
+            } break;
+            case FLAC__METADATA_TYPE_VORBIS_COMMENT: {
+                this->metadata = new FLAC::Metadata::VorbisComment(metadata);
+                fprintf(stderr,"Found Ogg Vorbis type comment.\n");
+            } break;
+            default: {
+                fprintf(stderr,"Unhandled metadata found.\n");
+            }
+        }
 }
+
 void Stream_Ext::error_callback (::FLAC__StreamDecoderErrorStatus status)
 {
 	if (status == FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC)
@@ -189,4 +204,37 @@ Stream_Ext::Stream_Ext()
 {
 	node_top = NULL;
 	node_tail = NULL;
+    this->metadata = NULL;
+}
+
+void Stream_Ext::getgfi(struct generic_file_info &gfi) {
+    if (metadata == NULL)
+        return;
+
+	for(uint i=0;i<metadata->get_num_comments();i++)
+	{   
+        FLAC::Metadata::VorbisComment::Entry comment = metadata->get_comment(i);
+        const char * tag_key =   comment.get_field_name();
+        const char * tag_value = comment.get_field_value();
+        
+		       if (strcasecmp(tag_key,"title") == 0) {
+            strcpy(gfi.title,tag_value);
+        } else if (strcasecmp(tag_key,"artist") == 0) {
+            strcpy(gfi.artist,tag_value);
+        } else if (strcasecmp(tag_key,"album") == 0) {
+            strcpy(gfi.album,tag_value);
+        } else if (strcasecmp(tag_key,"comment") == 0) {
+            strcpy(gfi.comment,tag_value);
+        } else if (strcasecmp(tag_key,"genre") == 0) {
+            strcpy(gfi.genre,tag_value);
+        } else if (strcasecmp(tag_key,"date") == 0) {
+            strcpy(gfi.year,tag_value);
+        } else if (strcasecmp(tag_key,"year") == 0) {
+            strcpy(gfi.year,tag_value);
+        } else if (strcasecmp(tag_key,"tracknumber") == 0) {
+            strcpy(gfi.track,tag_value);
+        } else {
+            fprintf(stderr,"Decoder: FLAC: Unknown metadata comment '%s'=>'%.*s'\n",tag_key,80,tag_value);
+        }
+	}
 }

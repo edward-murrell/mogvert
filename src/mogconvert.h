@@ -25,10 +25,10 @@ struct generic_file_info {
 	char title[STRINGS_SIZE];
 	char artist[STRINGS_SIZE];
 	char album[STRINGS_SIZE];
-	char comment[STRINGS_SIZE];
-	int year;
-	int track;
-	int total_tracks;
+	char genre[STRINGS_SIZE];
+	char year[STRINGS_SIZE];
+	char track[STRINGS_SIZE];
+	char comment[STRINGS_SIZE];    
 };
 
 struct coder_info {

@@ -21,6 +21,7 @@ class Stream_Ext: public FLAC::Decoder::Stream {
 	private:
 FLAC__StreamDecoderReadStatus read_callback (FLAC__byte buffer[], size_t *bytes);
 FLAC__StreamDecoderWriteStatus write_callback (const::FLAC__Frame *frame, const FLAC__int32 *const buffer[]);
+FLAC::Metadata::VorbisComment *metadata;
 flac_wave_buffer_node *node_top;
 flac_wave_buffer_node *node_tail;
 FILE *inputfile;
@@ -30,6 +31,7 @@ void set_file(FILE *setfile);
 struct flac_wave_buffer_node* get_node();	// If null, nothing avaliable.
 void metadata_callback (const::FLAC__StreamMetadata *metadata);
 void error_callback (::FLAC__StreamDecoderErrorStatus status);
+void getgfi(struct generic_file_info &gfi);
 };
 
 
