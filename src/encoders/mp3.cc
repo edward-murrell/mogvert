@@ -19,9 +19,14 @@ int  mp3_encoder::init(struct generic_file_info &gfi, struct encoding_options &e
 	id3tag_init(lamehandle);
 	id3tag_add_v2(lamehandle);
 
-	id3tag_set_title(lamehandle, gfi.title);
-	id3tag_set_artist(lamehandle, gfi.artist);
-	id3tag_set_album(lamehandle, gfi.album);
+    id3tag_set_title  (lamehandle, gfi.title);
+    id3tag_set_artist (lamehandle, gfi.artist);
+    id3tag_set_album  (lamehandle, gfi.album);
+    id3tag_set_genre  (lamehandle, gfi.genre);
+    id3tag_set_year   (lamehandle, gfi.year);
+    id3tag_set_track  (lamehandle, gfi.track);
+    id3tag_set_comment(lamehandle, gfi.comment);
+    
 	return true;
 }
 

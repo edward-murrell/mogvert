@@ -225,6 +225,16 @@ void Stream_Ext::getgfi(struct generic_file_info &gfi) {
             strcpy(gfi.album,tag_value);
         } else if (strcasecmp(tag_key,"comment") == 0) {
             strcpy(gfi.comment,tag_value);
-        }        
+        } else if (strcasecmp(tag_key,"genre") == 0) {
+            strcpy(gfi.genre,tag_value);
+        } else if (strcasecmp(tag_key,"date") == 0) {
+            strcpy(gfi.year,tag_value);
+        } else if (strcasecmp(tag_key,"year") == 0) {
+            strcpy(gfi.year,tag_value);
+        } else if (strcasecmp(tag_key,"tracknumber") == 0) {
+            strcpy(gfi.track,tag_value);
+        } else {
+            fprintf(stderr,"Decoder: FLAC: Unknown metadata comment '%s'=>'%.*s'\n",tag_key,80,tag_value);
+        }
 	}
 }
