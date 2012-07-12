@@ -26,15 +26,11 @@ int main(int argc,  char* argv[])
 	unsigned char		wave_buffer[WAVE_BUFFER_SIZE];
 	unsigned char		encoded_buffer[OUTPUT_BUFFER_SIZE];
 
-	printf("MAIN() wave_buffer addr: %p\n",&wave_buffer);
-
 	struct generic_file_info gfi;
 
 	info           = mog_initmog(argc,argv); 	// parse comandline arguments
 	inputfile      = fopen(info.input_file,"rb");	// open inputfile
 	outputfile     = fopen(info.output_file,"wb");	// open outputfile
-
-	printf("inputfile ptr: %p\n",inputfile);
 
     encodeop.bitrate = info.bitrate;
 
