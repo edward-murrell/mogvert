@@ -7,14 +7,17 @@
 
 CXX=g++
 VERSION="0.2"
-CXXFLAGS="-O3 -Wall -g -pipe"
-OBJS="init.o error.o filehandler.o decoders/ogg.o decoders/flac.o encoders/mp3.o encoders/ao.o mogconvert.o"
-BINARY="mogconvert"
+CXXFLAGS=" -Wall -g -pipe"
+OBJS="init.o error.o filehandler.o decoders/ogg.o decoders/flac.o encoders/mp3.o encoders/ao.o"
+OBJ_BIN="mogconvert.o"
+BINARY="mogvert"
 BINDIR="/usr/local/"
 MANDIR="/usr/man"
 MANPAGE="mogconvert.1"
 SDIR="src"
 MDIR="man"
+TESTBINARY="test"
+OBJ_TEST="test.o"
 
 #clean old files
 rm -f Makefile
@@ -103,9 +106,9 @@ else
 fi
 
 printf "Checking for vorbis libraries... "
-`ld -lvorbis -lvorbisfile -e 0 1>/dev/null 2>&1` && FLAG=1;
+`ld -logg -lvorbis -lvorbisfile -e 0 1>/dev/null 2>&1` && FLAG=1;
 if [ $FLAG==1 ]; then
-	LIBS="$LIBS -lvorbisfile -lvorbis";
+	LIBS="$LIBS -logg -lvorbisfile -lvorbis";
 	printf "yes\n"
 	FLAG=0;
 else
@@ -126,9 +129,9 @@ fi
 
 
 printf "Checking for FLAC++ libraries... "
- `ld -lFLAC++ -e 0 1>/dev/null 2>&1` && FLAG=1;
+ `ld -lFLAC -lFLAC++ -e 0 1>/dev/null 2>&1` && FLAG=1;
 if [ $FLAG==1 ]; then
-	LIBS="$LIBS -lFLAC++";
+	LIBS="$LIBS -lFLAC -lFLAC++";
 	printf "yes\n"
 	FLAG=0;
 else
@@ -169,7 +172,10 @@ printf "CXX=$CXX\n" >> src/Makefile;
 printf "LIBS=$LIBS\n" >> src/Makefile;
 printf "CXXFLAGS=$CXXFLAGS\n" >> src/Makefile;
 printf "OBJS=$OBJS\n" >> src/Makefile;
+printf "OBJ_BIN=$OBJ_BIN\n" >> src/Makefile;
 printf "BINDIR=$BINDIR\n" >> src/Makefile;
+printf "TESTBINARY=$TESTBINARY\n" >> src/Makefile;
+printf "OBJ_TEST=$OBJ_TEST\n" >> src/Makefile;
 
 printf "\n.PHONY: all run clean install\n" >> src/Makefile
 printf "\n.SUFFIXES:\n" >> src/Makefile
@@ -179,7 +185,10 @@ printf "\n%%.o: %%.c\n\t\$(CXX) \$(CXXFLAGS) -c -o \$@ \$^\n" >> src/Makefile;
 
 printf "\nall: \$(BINARY)\n" >> src/Makefile;
 
-printf "\n\$(BINARY):\t\$(OBJS)\n\t\$(CXX) \$(CXXFLAGS) \$(LIBS) -o \$(BINARY) \$(OBJS)\n" >> src/Makefile;
+printf "\n\$(BINARY):\t\$(OBJ_BIN) \$(OBJS)\n\t\$(CXX) \$(CXXFLAGS) -o \$(BINARY) \$(OBJS) \$(OBJ_BIN) \$(LIBS)\n" >> src/Makefile;
+
+printf "\ntestbin: \$(OBJ_TEST) \$(OBJS)\n\t\$(CXX) \$(CXXFLAGS) -o \$(TESTBINARY) \$(OBJS) \$(OBJ_TEST) \$(LIBS)\n" >> src/Makefile;
+printf "\ntest: testbin\n\t./\$(TESTBINARY)\n" >> src/Makefile;
 
 if [ ! -z $STRIP ]; then
 	printf "\ninstall: all\n\t\$(STRIP) \$(BINARY)\n\t" >> src/Makefile;
@@ -202,13 +211,14 @@ fi
 
 printf "\nrun: \$(BINARY)\n\t./\$(BINARY)\n" >> src/Makefile;
 
-printf "\nclean:\n\t-rm -f \$(OBJS) \$(BINARY)\n\t-rm -f ../\$(BINARY)\n" >> src/Makefile;
+printf "\nclean:\n\t-rm -f \$(OBJS) \$(OBJ_BIN) \$(OBJ_TEST) \$(BINARY) \$(TESTBINARY)\n\t-rm -f ../\$(BINARY)\n" >> src/Makefile;
 
 #create main makefile
 printf "SRCDIR = $SDIR\nMANDIR = $MDIR\n" >> Makefile
-printf "\n.PHONY: all install run clean\n" >> Makefile
+printf "\n.PHONY: all install run clean test\n" >> Makefile
 printf "\nall:\n\tcd \$(SRCDIR); make;\n\tcd \$(MANDIR); make;\n" >> Makefile
 printf "\ninstall: all\n\tcd \$(SRCDIR); make install;\n\tcd \$(MANDIR); make install;\n" >> Makefile
+printf "\ntest:\tall\n\tcd \$(SRCDIR); make test;\n" >> Makefile
 printf "\nrun:\n\tcd \$(SRCDIR); make run;\n" >> Makefile
 printf "\nclean:\n\tcd \$(SRCDIR); make clean;\n\tcd \$(MANDIR); make clean;\n" >> Makefile
 
