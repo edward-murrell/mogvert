@@ -174,15 +174,15 @@ void Stream_Ext::metadata_callback (const::FLAC__StreamMetadata *metadata)
         switch (metadata->type) {
             case FLAC__METADATA_TYPE_STREAMINFO: {
                 const FLAC__StreamMetadata_StreamInfo * stream_info = &metadata->data.stream_info;
-                fprintf(stderr,"Samplerate/bits/channels: %i/%i/%i\n",stream_info->sample_rate,stream_info->bits_per_sample,stream_info->channels);
+                fprintf(stderr,"Decoder: FLAC: Samplerate/bits/channels: %i/%i/%i\n",stream_info->sample_rate,stream_info->bits_per_sample,stream_info->channels);
                 //TODO, turn this into useful information
             } break;
             case FLAC__METADATA_TYPE_VORBIS_COMMENT: {
                 this->metadata = new FLAC::Metadata::VorbisComment(metadata);
-                fprintf(stderr,"Found Ogg Vorbis type comment.\n");
+                fprintf(stderr,"Decoder: FLAC: Found Ogg Vorbis type comment.\n");
             } break;
             default: {
-                fprintf(stderr,"Unhandled metadata found.\n");
+                fprintf(stderr,"Decoder: FLAC: Unhandled metadata found.\n");
             }
         }
 }
@@ -191,13 +191,13 @@ void Stream_Ext::error_callback (::FLAC__StreamDecoderErrorStatus status)
 {
 	if (status == FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC)
 	{
-		printf("An error in the stream caused the decoder to lose synchronization.\n");
+		printf("Decoder: FLAC: An error in the stream caused the decoder to lose synchronization.\n");
 		reset();
 	}
 	else if (status == FLAC__STREAM_DECODER_ERROR_STATUS_BAD_HEADER)
-		printf("The decoder encountered a corrupted frame header.\n");
+		printf("Decoder: FLAC: The decoder encountered a corrupted frame header.\n");
 	else if (status == FLAC__STREAM_DECODER_ERROR_STATUS_FRAME_CRC_MISMATCH)
-		printf("The frame's data did not match the CRC in the footer.\n");
+		printf("Decoder: FLAC: The frame's data did not match the CRC in the footer.\n");
 }
 
 Stream_Ext::Stream_Ext()
