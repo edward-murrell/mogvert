@@ -7,14 +7,21 @@
 
 #define mog_opt_type int
 
+include <types.h>
+include <list>
+
 set_options(struct mogopt)
 
 typedef struct {
+	const char * name;
 	mog_opt_type type;
     union {
-       int value; // VERY TEMPORARY
+       u_int32_t	uint_value;
+       int32_t		sint_value;
+       const char	char_value;	
+       const char *	a_char_value;
     } data;
-} mog_option_stack;
+} mog_option;
 
 
 // rough plan
@@ -34,8 +41,25 @@ base {
 
 }
 
-cli {
-    override constructor()
-    provide help
-    detect based on file magic for badly named file
+
+template <class T >
+class myList : public std::list<T>
+class mogvert::options: STL vector {???
+protected:
+	list<mog_option> 
+public:
+	
 }
+
+class mogvert::options::cli: mogvert::options {
+private:
+	void print_help();
+	void detect_file_type();
+protected:
+	mogvert::options decoder_opts;
+	mogvert::options encoder_opts;
+	mogvert::options metacode_opts;
+public:
+	cli(int argc,  char* argv[]); // If you think this looks like CLI input commands, you'd be right
+}
+
