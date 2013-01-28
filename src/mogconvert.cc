@@ -17,6 +17,8 @@ int main(int argc,  char* argv[])
     struct encoding_options encodeop;
 	FILE *inputfile;
 	FILE *outputfile;
+    void* input_test = malloc(4);
+    
 	int decode_format = 0;	// TODO - Should really make these part of a struct
 	int encode_format = 0;
 
@@ -31,6 +33,21 @@ int main(int argc,  char* argv[])
 
 	info           = mog_initmog(argc,argv); 	// parse comandline arguments
 	inputfile      = fopen(info.input_file,"rb");	// open inputfile
+    
+
+    if (fread(input_test, 4,1, inputfile) == 1) {
+        rewind(inputfile);
+    } else {
+        if (feof(inputfile)) {
+            fprintf(stderr,"No data from stdin.");
+            exit(1);
+        } else if (ferror(inputfile)) {
+            fprintf(stderr,"Undetermined error reading input file or stream.");
+            exit(1);            
+        }
+    }
+
+    
 	outputfile     = fopen(info.output_file,"wb");	// open outputfile
 
     encodeop.bitrate = info.bitrate;
