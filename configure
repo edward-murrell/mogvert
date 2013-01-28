@@ -95,8 +95,8 @@ fi
 LIBS=""
 FLAG=0
 printf "Checking for lame libraries... "
-`ld -lmp3lame -lm -e 0 1>/dev/null 2>&1` && FLAG=1;
-if [ $FLAG==1 ]; then
+`ld -lmp3lame -lm -e0>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
 	LIBS="$LIBS -lmp3lame";
 	printf "yes\n"
 	FLAG=0;
@@ -106,8 +106,8 @@ else
 fi
 
 printf "Checking for vorbis libraries... "
-`ld -logg -lvorbis -lvorbisfile -e 0 1>/dev/null 2>&1` && FLAG=1;
-if [ $FLAG==1 ]; then
+`ld -logg -lvorbis -lvorbisfile -e0>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
 	LIBS="$LIBS -logg -lvorbisfile -lvorbis";
 	printf "yes\n"
 	FLAG=0;
@@ -117,8 +117,8 @@ else
 fi
 
 printf "Checking for ao libraries... "
- `ld -lao -e 0 1>/dev/null 2>&1` && FLAG=1;
-if [ $FLAG==1 ]; then
+ `ld -lao -e0>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
 	LIBS="$LIBS -lao";
 	printf "yes\n"
 	FLAG=0;
@@ -129,8 +129,8 @@ fi
 
 
 printf "Checking for FLAC++ libraries... "
- `ld -lFLAC -lFLAC++ -e 0 1>/dev/null 2>&1` && FLAG=1;
-if [ $FLAG==1 ]; then
+`ld -lFLAC -lFLAC++ -e0>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
 	LIBS="$LIBS -lFLAC -lFLAC++";
 	printf "yes\n"
 	FLAG=0;
