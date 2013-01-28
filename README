@@ -94,4 +94,5 @@ edward@murrell.co.nz. If you have any useful suggestions, please mail him them.
 
 He would also like to thank the following persons, (alphabetically):
 	- angelorum (coding,big endian support,config scripts,documentation)
+	- David Murrell (coding, x86_64 support, test harness)
 	- any other people who might feel forgotten.
