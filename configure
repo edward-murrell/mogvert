@@ -90,6 +90,7 @@ else
 	printf "$COMPRESS\n";
 fi
 
+HTEST="/tmp/testheadermog_`date +%s`.c"
 
 #make sure we have all required libraries
 LIBS=""
@@ -104,6 +105,18 @@ else
 	printf "no\nAborting\n";
 	exit 1;
 fi
+echo -e "#include <lame/lame.h>\nint main(void){return 0;}" > $HTEST
+printf "Checking for lame headers... "
+`g++ $HTEST>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
+	printf "yes\n"
+	FLAG=0;
+else
+	printf "no\nAborting\n";
+	rm $HTEST
+	exit 1
+fi
+rm $HTEST
 
 printf "Checking for vorbis libraries... "
 `ld -logg -lvorbis -lvorbisfile -e0>/dev/null 2>&1` && FLAG=1;
@@ -115,6 +128,18 @@ else
 	printf "no\nAborting\n";
 	exit 1
 fi
+echo -e "#include <vorbis/vorbisfile.h>\n#include <vorbis/codec.h>\nint main(void){return 0;}" > $HTEST
+printf "Checking for vorbis headers... "
+`g++ $HTEST>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
+	printf "yes\n"
+	FLAG=0;
+else
+	printf "no\nAborting\n";
+	rm $HTEST
+	exit 1
+fi
+rm $HTEST
 
 printf "Checking for ao libraries... "
  `ld -lao -e0>/dev/null 2>&1` && FLAG=1;
@@ -126,6 +151,18 @@ else
 	printf "no\nAborting\n";
 	exit 1
 fi
+echo -e "#include <ao/ao.h>\nint main(void){return 0;}" > $HTEST
+printf "Checking for ao headers... "
+`g++ $HTEST>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
+	printf "yes\n"
+	FLAG=0;
+else
+	printf "no\nAborting\n";
+	rm $HTEST
+	exit 1
+fi
+rm $HTEST
 
 
 printf "Checking for FLAC++ libraries... "
@@ -138,6 +175,18 @@ else
 	printf "no\nAborting\n";
 	exit 1
 fi
+echo -e "#include <FLAC++/metadata.h>\n#include <FLAC++/decoder.h>\nint main(void){return 0;}" > $HTEST
+printf "Checking for FLAC++ headers... "
+`g++ $HTEST>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
+	printf "yes\n"
+	FLAG=0;
+else
+	printf "no\nAborting\n";
+	rm $HTEST
+	exit 1
+fi
+rm $HTEST
 
 
 #write new makefiles
