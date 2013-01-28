@@ -1,0 +1,46 @@
+# Anticipated hopeful future programming flow
+#psuedo code
+main () {
+
+mog_options opts = process_arguments(argc,argv);
+
+mogvert_decoder *dec = new opts.decoder;
+dec->set_options(opts.decoder_options);
+
+mogvert_encoder *enc = new opts.encoder;
+enc->set_options(opts.encoder_options);
+
+mogvert mog = new mogvert();
+
+resp = mog->set_encoder(dec);
+process_error(resp);
+
+resp = mog->set_encoder(enc);
+process_error(resp);
+
+resp = mog->set_tagger_options(opts.tagger_options);
+process_error(resp);
+
+mog->set_finished_fallback(&mog_display_status);
+
+mog->go();
+}
+
+void mog_display_status(*mogvert mog) {
+	mogvert_status status = mog->get_status();
+	output various status points here
+}
+
+void process_error(mogvert_response* resp) {
+	switch on response, quit on fatal error
+}
+
+mog_options must have the following
+	name (eg, bitrate)
+	alias (eg br)
+	callback (void set_bit_rate)
+	type (string, int, float)
+	default_value (128)
+
+hash map from C++?
+
