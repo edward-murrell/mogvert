@@ -1,6 +1,7 @@
 COMPRESS = /bin/gzip
 INSTALL = /usr/bin/install
-MANDIR = /usr/man
+PREFIX=/usr/local
+MANDIR = $(PREFIX)/man
 MANPAGE = mogconvert.1
 
 all:

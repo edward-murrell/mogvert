@@ -15,8 +15,8 @@ CXXFLAGS=" -Wall -g -pipe"
 OBJS="init.o error.o filehandler.o decoders/ogg.o decoders/flac.o encoders/mp3.o encoders/ao.o"
 OBJ_BIN="mogconvert.o"
 BINARY="mogvert"
-BINDIR="$PREFIX/bin"
-MANDIR="$PREFIX/man"
+BINDIR="bin"
+MANDIR="man"
 MANPAGE="mogconvert.1"
 SDIR="src"
 MDIR="man"
@@ -30,8 +30,8 @@ rm -f man/Makefile
 
 printf "Configuring mogconvert version $VERSION\n"
 
-echo "Install binary to $BINDIR/$BINARY"
-echo "Install manpage to $MANDIR/$MANPAGE"
+echo "Install binary to $PREFIX/$BINDIR/$BINARY"
+echo "Install manpage to $PREFIX/$MANDIR/$MANPAGE"
 
 #make sure we actually have a compiler
 printf "Checking for a working C++ compiler... "
@@ -200,7 +200,8 @@ rm $HTEST
 #write manual page makefile
 [ ! -z $COMPRESS ] && printf "COMPRESS = $COMPRESS\n" >> man/Makefile;
 [ ! -z $INSTALL ] && printf "INSTALL = $INSTALL\n" >> man/Makefile;
-printf "MANDIR = $MANDIR\n" >> man/Makefile;
+printf "PREFIX=$PREFIX\n" >> man/Makefile
+printf "MANDIR = \$(PREFIX)/$MANDIR\n" >> man/Makefile;
 printf "MANPAGE = $MANPAGE\n" >> man/Makefile;
 
 if [ -z $COMPRESS ]; then
@@ -229,7 +230,8 @@ printf "LIBS=$LIBS\n" >> src/Makefile;
 printf "CXXFLAGS=$CXXFLAGS\n" >> src/Makefile;
 printf "OBJS=$OBJS\n" >> src/Makefile;
 printf "OBJ_BIN=$OBJ_BIN\n" >> src/Makefile;
-printf "BINDIR=$BINDIR\n" >> src/Makefile;
+printf "PREFIX=$PREFIX\n" >> src/Makefile
+printf "BINDIR=\$(PREFIX)/$BINDIR\n" >> src/Makefile;
 printf "TESTBINARY=$TESTBINARY\n" >> src/Makefile;
 printf "OBJ_TEST=$OBJ_TEST\n" >> src/Makefile;
 
@@ -271,6 +273,7 @@ printf "\nclean:\n\t-rm -f \$(OBJS) \$(OBJ_BIN) \$(OBJ_TEST) \$(BINARY) \$(TESTB
 
 #create main makefile
 printf "SRCDIR = $SDIR\nMANDIR = $MDIR\n" >> Makefile
+printf "PREFIX=$PREFIX\n" >> Makefile
 printf "\n.PHONY: all install run clean test\n" >> Makefile
 printf "\nall:\n\tcd \$(SRCDIR); make;\n\tcd \$(MANDIR); make;\n" >> Makefile
 printf "\ninstall: all\n\tcd \$(SRCDIR); make install;\n\tcd \$(MANDIR); make install;\n" >> Makefile
