@@ -5,14 +5,18 @@
 # * add support for --prefix
 # * add output for --help
 
+if [ -z $PREFIX ]; then
+PREFIX="/usr/local";
+fi
+
 CXX=g++
 VERSION="0.2"
 CXXFLAGS=" -Wall -g -pipe"
 OBJS="init.o error.o filehandler.o decoders/ogg.o decoders/flac.o encoders/mp3.o encoders/ao.o"
 OBJ_BIN="mogconvert.o"
 BINARY="mogvert"
-BINDIR="/usr/local/"
-MANDIR="/usr/man"
+BINDIR="$PREFIX/bin"
+MANDIR="$PREFIX/man"
 MANPAGE="mogconvert.1"
 SDIR="src"
 MDIR="man"
@@ -25,6 +29,9 @@ rm -f src/Makefile
 rm -f man/Makefile
 
 printf "Configuring mogconvert version $VERSION\n"
+
+echo "Install binary to $BINDIR/$BINARY"
+echo "Install manpage to $MANDIR/$MANPAGE"
 
 #make sure we actually have a compiler
 printf "Checking for a working C++ compiler... "
@@ -242,19 +249,19 @@ printf "\ntest: testbin\n\t./\$(TESTBINARY)\n" >> src/Makefile;
 if [ ! -z $STRIP ]; then
 	printf "\ninstall: all\n\t\$(STRIP) \$(BINARY)\n\t" >> src/Makefile;
 	if [ ! -z $INSTALL ]; then
-		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
 	else
-		printf "cp -f \$(BINARY) \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
-		printf "\tchmod 0755 \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
-		printf "\tchown root:root \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+		printf "cp -f \$(BINARY) \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchmod 0755 \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchown root:root \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
 	fi
 else
 	if [ ! -z $INSTALL ]; then
-		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
 	else
-		printf "cp -f \$(BINARY) \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
-		printf "\tchmod 0755 \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
-		printf "\tchown root:root \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+		printf "cp -f \$(BINARY) \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchmod 0755 \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchown root:root \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
 	fi
 fi
 
