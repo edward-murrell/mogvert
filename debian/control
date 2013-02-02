@@ -1,0 +1,12 @@
+Source: mogvert
+Section: sound
+Priority: extra
+Maintainer: Edward Murrell <edward@murrell.co.nz>
+Build-Depends: debhelper (>= 8.0.0), autotools-dev
+Standards-Version: 3.9.2
+Homepage: https://github.com/edward-murrell/mogvert
+
+Package: mogvert
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends} libmp3lame0 libvorbisfile3 libflac++6 libao4
+Description: Mogvert is an command line audio reencoder.
