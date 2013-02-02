@@ -9,6 +9,19 @@ if [ -z $PREFIX ]; then
 PREFIX="/usr/local";
 fi
 
+# Borrowed straight from http://mywiki.wooledge.org/BashFAQ/035
+while [[ $1 == -* ]]; do
+    case "$1" in
+      -h|--help|-\?) echo "--prefix=PREFIX install files in PREFIX/bin & PREFIX/man"; exit 0;;
+			--prefix=*)
+            PREFIX=${1#*=}        # Delete everything up till "="
+            shift
+            ;;
+      --) shift; break;;
+      -*) echo "invalid option: $1" 1>&2; exit 1;;
+    esac
+done
+
 CXX=g++
 VERSION="0.2"
 CXXFLAGS=" -Wall -g -pipe"
