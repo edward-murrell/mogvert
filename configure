@@ -239,11 +239,11 @@ else
 fi
 
 if [ -z $INSTALL ]; then
-	printf "\ninstall:\n\tcp -f \$(MANPAGE)$SUFFIX \$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
-	printf "\tchmod 0644 \$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
-	printf "\tchmod root:root \$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+	printf "\ninstall:\n\tcp -f \$(MANPAGE)$SUFFIX \$(DESTDIR)/\$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+	printf "\tchmod 0644 \$(DESTDIR)/\$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+	printf "\tchmod root:root \$(DESTDIR)/\$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
 else
-	printf "\ninstall:\n\t\$(INSTALL) -m 0644 -o root -g root \$(MANPAGE)$SUFFIX \$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+	printf "\ninstall:\n\t\$(INSTALL) -m 0644 -o root -g root \$(MANPAGE)$SUFFIX \$(DESTDIR)/\$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
 fi
 
 printf "\nclean:\n\trm -f \$(MANPAGE)$SUFFIX\n\n" >> man/Makefile;
@@ -279,19 +279,19 @@ printf "\ntest: testbin\n\t./\$(TESTBINARY)\n" >> src/Makefile;
 if [ ! -z $STRIP ]; then
 	printf "\ninstall: all\n\t\$(STRIP) \$(BINARY)\n\t" >> src/Makefile;
 	if [ ! -z $INSTALL ]; then
-		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(DESTDIR)/\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
 	else
-		printf "cp -f \$(BINARY) \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
-		printf "\tchmod 0755 \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
-		printf "\tchown root:root \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "cp -f \$(BINARY) \$(DESTDIR)/\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchmod 0755 \$(DESTDIR)/\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchown root:root \$(DESTDIR)/\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
 	fi
 else
 	if [ ! -z $INSTALL ]; then
-		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(DESTDIR)/\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
 	else
-		printf "cp -f \$(BINARY) \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
-		printf "\tchmod 0755 \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
-		printf "\tchown root:root \$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "cp -f \$(BINARY) \$DESTDIR\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchmod 0755 \$DESTDIR\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchown root:root \$DESTDIR\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
 	fi
 fi
 
