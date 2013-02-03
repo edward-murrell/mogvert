@@ -1,9 +1,13 @@
 #!/bin/bash
-#configuration for mogconvert
+#configuration for mogvert
 
 # TODO
 # * add support for --prefix
 # * add output for --help
+
+if [ -z $PREFIX ]; then
+PREFIX="/usr/local";
+fi
 
 CXX=g++
 VERSION="0.2"
@@ -11,20 +15,51 @@ CXXFLAGS=" -Wall -g -pipe"
 OBJS="init.o error.o filehandler.o decoders/ogg.o decoders/flac.o encoders/mp3.o encoders/ao.o"
 OBJ_BIN="mogconvert.o"
 BINARY="mogvert"
-BINDIR="/usr/local/"
-MANDIR="/usr/man"
-MANPAGE="mogconvert.1"
+BINDIR="bin"
+MANDIR="man"
+MANPAGE="mogvert.1"
 SDIR="src"
 MDIR="man"
 TESTBINARY="test"
 OBJ_TEST="test.o"
+
+# Borrowed straight from http://mywiki.wooledge.org/BashFAQ/035
+while [[ $1 == -* ]]; do
+    case "$1" in
+      -h|--help|-\?) echo "--prefix=PREFIX install files in PREFIX/bin & PREFIX/man"; exit 0;;
+	  --prefix=*)
+            PREFIX=${1#*=}        # Delete everything up till "="
+            shift
+            ;;
+      --build=*)
+			BUILD=${1#*=}
+			shift;;
+      --mandir=*)
+			MANDIR=${1#*=}
+			shift;;
+      --includedir=*) shift;;
+      --infodir=*) shift;;
+      --sysconfdir=*) shift;;
+      --localstatedir=*) shift;;
+      --libexecdir=*) shift;;
+      --*able-maintainer-mode) shift;;
+      --*able-dependency-tracking) shift;;
+      --) shift; break;;
+      -*) echo "invalid option: $1" 1>&2; exit 1;;
+    esac
+done
+
+#--build=i686-linux-gnu
 
 #clean old files
 rm -f Makefile
 rm -f src/Makefile
 rm -f man/Makefile
 
-printf "Configuring mogconvert version $VERSION\n"
+printf "Configuring mogvert version $VERSION\n"
+
+echo "Install binary to $PREFIX/$BINDIR/$BINARY"
+echo "Install manpage to $PREFIX/$MANDIR/$MANPAGE"
 
 #make sure we actually have a compiler
 printf "Checking for a working C++ compiler... "
@@ -90,13 +125,14 @@ else
 	printf "$COMPRESS\n";
 fi
 
+HTEST="/tmp/testheadermog_`date +%s`.c"
 
 #make sure we have all required libraries
 LIBS=""
 FLAG=0
 printf "Checking for lame libraries... "
-`ld -lmp3lame -lm -e 0 1>/dev/null 2>&1` && FLAG=1;
-if [ $FLAG==1 ]; then
+`ld -lmp3lame -lm -e0>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
 	LIBS="$LIBS -lmp3lame";
 	printf "yes\n"
 	FLAG=0;
@@ -104,10 +140,22 @@ else
 	printf "no\nAborting\n";
 	exit 1;
 fi
+echo -e "#include <lame/lame.h>\nint main(void){return 0;}" > $HTEST
+printf "Checking for lame headers... "
+`g++ $HTEST>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
+	printf "yes\n"
+	FLAG=0;
+else
+	printf "no\nAborting\n";
+	rm $HTEST
+	exit 1
+fi
+rm $HTEST
 
 printf "Checking for vorbis libraries... "
-`ld -logg -lvorbis -lvorbisfile -e 0 1>/dev/null 2>&1` && FLAG=1;
-if [ $FLAG==1 ]; then
+`ld -logg -lvorbis -lvorbisfile -e0>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
 	LIBS="$LIBS -logg -lvorbisfile -lvorbis";
 	printf "yes\n"
 	FLAG=0;
@@ -115,10 +163,22 @@ else
 	printf "no\nAborting\n";
 	exit 1
 fi
+echo -e "#include <vorbis/vorbisfile.h>\n#include <vorbis/codec.h>\nint main(void){return 0;}" > $HTEST
+printf "Checking for vorbis headers... "
+`g++ $HTEST>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
+	printf "yes\n"
+	FLAG=0;
+else
+	printf "no\nAborting\n";
+	rm $HTEST
+	exit 1
+fi
+rm $HTEST
 
 printf "Checking for ao libraries... "
- `ld -lao -e 0 1>/dev/null 2>&1` && FLAG=1;
-if [ $FLAG==1 ]; then
+ `ld -lao -e0>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
 	LIBS="$LIBS -lao";
 	printf "yes\n"
 	FLAG=0;
@@ -126,11 +186,23 @@ else
 	printf "no\nAborting\n";
 	exit 1
 fi
+echo -e "#include <ao/ao.h>\nint main(void){return 0;}" > $HTEST
+printf "Checking for ao headers... "
+`g++ $HTEST>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
+	printf "yes\n"
+	FLAG=0;
+else
+	printf "no\nAborting\n";
+	rm $HTEST
+	exit 1
+fi
+rm $HTEST
 
 
 printf "Checking for FLAC++ libraries... "
- `ld -lFLAC -lFLAC++ -e 0 1>/dev/null 2>&1` && FLAG=1;
-if [ $FLAG==1 ]; then
+`ld -lFLAC -lFLAC++ -e0>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
 	LIBS="$LIBS -lFLAC -lFLAC++";
 	printf "yes\n"
 	FLAG=0;
@@ -138,13 +210,26 @@ else
 	printf "no\nAborting\n";
 	exit 1
 fi
+echo -e "#include <FLAC++/metadata.h>\n#include <FLAC++/decoder.h>\nint main(void){return 0;}" > $HTEST
+printf "Checking for FLAC++ headers... "
+`g++ $HTEST>/dev/null 2>&1` && FLAG=1;
+if [ "$FLAG" = "1" ] ; then
+	printf "yes\n"
+	FLAG=0;
+else
+	printf "no\nAborting\n";
+	rm $HTEST
+	exit 1
+fi
+rm $HTEST
 
 
 #write new makefiles
 #write manual page makefile
 [ ! -z $COMPRESS ] && printf "COMPRESS = $COMPRESS\n" >> man/Makefile;
 [ ! -z $INSTALL ] && printf "INSTALL = $INSTALL\n" >> man/Makefile;
-printf "MANDIR = $MANDIR\n" >> man/Makefile;
+printf "PREFIX=$PREFIX\n" >> man/Makefile
+printf "MANDIR = \$(PREFIX)/$MANDIR\n" >> man/Makefile;
 printf "MANPAGE = $MANPAGE\n" >> man/Makefile;
 
 if [ -z $COMPRESS ]; then
@@ -154,11 +239,11 @@ else
 fi
 
 if [ -z $INSTALL ]; then
-	printf "\ninstall:\n\tcp -f \$(MANPAGE)$SUFFIX \$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
-	printf "\tchmod 0644 \$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
-	printf "\tchmod root:root \$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+	printf "\ninstall:\n\tcp -f \$(MANPAGE)$SUFFIX \$(DESTDIR)/\$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+	printf "\tchmod 0644 \$(DESTDIR)/\$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+	printf "\tchmod root:root \$(DESTDIR)/\$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
 else
-	printf "\ninstall:\n\t\$(INSTALL) -m 0644 -o root -g root \$(MANPAGE)$SUFFIX \$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
+	printf "\ninstall:\n\t\$(INSTALL) -m 0644 -o root -g root \$(MANPAGE)$SUFFIX \$(DESTDIR)/\$(MANDIR)/man1/\$(MANPAGE)$SUFFIX\n" >> man/Makefile;
 fi
 
 printf "\nclean:\n\trm -f \$(MANPAGE)$SUFFIX\n\n" >> man/Makefile;
@@ -173,7 +258,8 @@ printf "LIBS=$LIBS\n" >> src/Makefile;
 printf "CXXFLAGS=$CXXFLAGS\n" >> src/Makefile;
 printf "OBJS=$OBJS\n" >> src/Makefile;
 printf "OBJ_BIN=$OBJ_BIN\n" >> src/Makefile;
-printf "BINDIR=$BINDIR\n" >> src/Makefile;
+printf "PREFIX=$PREFIX\n" >> src/Makefile
+printf "BINDIR=\$(PREFIX)/$BINDIR\n" >> src/Makefile;
 printf "TESTBINARY=$TESTBINARY\n" >> src/Makefile;
 printf "OBJ_TEST=$OBJ_TEST\n" >> src/Makefile;
 
@@ -193,19 +279,19 @@ printf "\ntest: testbin\n\t./\$(TESTBINARY)\n" >> src/Makefile;
 if [ ! -z $STRIP ]; then
 	printf "\ninstall: all\n\t\$(STRIP) \$(BINARY)\n\t" >> src/Makefile;
 	if [ ! -z $INSTALL ]; then
-		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(DESTDIR)/\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
 	else
-		printf "cp -f \$(BINARY) \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
-		printf "\tchmod 0755 \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
-		printf "\tchown root:root \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+		printf "cp -f \$(BINARY) \$(DESTDIR)/\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchmod 0755 \$(DESTDIR)/\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchown root:root \$(DESTDIR)/\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
 	fi
 else
 	if [ ! -z $INSTALL ]; then
-		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+		printf "\$(INSTALL) -s -m 0755 -o root -g root \$(BINARY) \$(DESTDIR)/\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
 	else
-		printf "cp -f \$(BINARY) \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
-		printf "\tchmod 0755 \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
-		printf "\tchown root:root \$(BINDIR)/bin/\$(BINARY)\n" >> src/Makefile;
+		printf "cp -f \$(BINARY) \$DESTDIR\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchmod 0755 \$DESTDIR\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
+		printf "\tchown root:root \$DESTDIR\$(BINDIR)/\$(BINARY)\n" >> src/Makefile;
 	fi
 fi
 
@@ -215,6 +301,7 @@ printf "\nclean:\n\t-rm -f \$(OBJS) \$(OBJ_BIN) \$(OBJ_TEST) \$(BINARY) \$(TESTB
 
 #create main makefile
 printf "SRCDIR = $SDIR\nMANDIR = $MDIR\n" >> Makefile
+printf "PREFIX=$PREFIX\n" >> Makefile
 printf "\n.PHONY: all install run clean test\n" >> Makefile
 printf "\nall:\n\tcd \$(SRCDIR); make;\n\tcd \$(MANDIR); make;\n" >> Makefile
 printf "\ninstall: all\n\tcd \$(SRCDIR); make install;\n\tcd \$(MANDIR); make install;\n" >> Makefile
