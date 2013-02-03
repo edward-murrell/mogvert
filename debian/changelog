@@ -1,0 +1,5 @@
+mogvert (0.2-1) unstable; urgency=low
+
+  * Initial release. Moved to github for the new decade, Add 64 bit support, fixed FLAC / OGG metadata import, and added Debian packaging.
+
+ -- Edward Murrell <edward@murrell.co.nz>  Sat, 02 Feb 2013 10:43:15 +1100
