@@ -10,12 +10,12 @@ in the process of rewriting to rebuild my rusty C++ skills.
 
 -------------------------------------------------------------------------------
 Project:  Mogvert - Audio File Reencoder
-Release:  0.1a
+Release:  0.2
 Authors:  Edward Murrell <edward@murrell.co.nz>
           Angelorum <angelorum@murrell.co.nz>
           David Murrell <david@murrell.co.nz>
 Website:  https://github.com/edward-murrell/mogvert
-Status:   pre-alpha
+Status:   alpha
 
 Index
 
