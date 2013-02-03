@@ -9,6 +9,20 @@ if [ -z $PREFIX ]; then
 PREFIX="/usr/local";
 fi
 
+CXX=g++
+VERSION="0.2"
+CXXFLAGS=" -Wall -g -pipe"
+OBJS="init.o error.o filehandler.o decoders/ogg.o decoders/flac.o encoders/mp3.o encoders/ao.o"
+OBJ_BIN="mogconvert.o"
+BINARY="mogvert"
+BINDIR="bin"
+MANDIR="man"
+MANPAGE="mogconvert.1"
+SDIR="src"
+MDIR="man"
+TESTBINARY="test"
+OBJ_TEST="test.o"
+
 # Borrowed straight from http://mywiki.wooledge.org/BashFAQ/035
 while [[ $1 == -* ]]; do
     case "$1" in
@@ -35,19 +49,7 @@ while [[ $1 == -* ]]; do
     esac
 done
 
-CXX=g++
-VERSION="0.2"
-CXXFLAGS=" -Wall -g -pipe"
-OBJS="init.o error.o filehandler.o decoders/ogg.o decoders/flac.o encoders/mp3.o encoders/ao.o"
-OBJ_BIN="mogconvert.o"
-BINARY="mogvert"
-BINDIR="bin"
-MANDIR="man"
-MANPAGE="mogconvert.1"
-SDIR="src"
-MDIR="man"
-TESTBINARY="test"
-OBJ_TEST="test.o"
+#--build=i686-linux-gnu
 
 #clean old files
 rm -f Makefile
