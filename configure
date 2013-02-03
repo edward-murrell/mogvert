@@ -13,10 +13,23 @@ fi
 while [[ $1 == -* ]]; do
     case "$1" in
       -h|--help|-\?) echo "--prefix=PREFIX install files in PREFIX/bin & PREFIX/man"; exit 0;;
-			--prefix=*)
+	  --prefix=*)
             PREFIX=${1#*=}        # Delete everything up till "="
             shift
             ;;
+      --build=*)
+			BUILD=${1#*=}
+			shift;;
+      --mandir=*)
+			MANDIR=${1#*=}
+			shift;;
+      --includedir=*) shift;;
+      --infodir=*) shift;;
+      --sysconfdir=*) shift;;
+      --localstatedir=*) shift;;
+      --libexecdir=*) shift;;
+      --*able-maintainer-mode) shift;;
+      --*able-dependency-tracking) shift;;
       --) shift; break;;
       -*) echo "invalid option: $1" 1>&2; exit 1;;
     esac
