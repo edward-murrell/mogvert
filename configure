@@ -1,5 +1,5 @@
 #!/bin/bash
-#configuration for mogconvert
+#configuration for mogvert
 
 # TODO
 # * add support for --prefix
@@ -17,7 +17,7 @@ OBJ_BIN="mogconvert.o"
 BINARY="mogvert"
 BINDIR="bin"
 MANDIR="man"
-MANPAGE="mogconvert.1"
+MANPAGE="mogvert.1"
 SDIR="src"
 MDIR="man"
 TESTBINARY="test"
@@ -56,7 +56,7 @@ rm -f Makefile
 rm -f src/Makefile
 rm -f man/Makefile
 
-printf "Configuring mogconvert version $VERSION\n"
+printf "Configuring mogvert version $VERSION\n"
 
 echo "Install binary to $PREFIX/$BINDIR/$BINARY"
 echo "Install manpage to $PREFIX/$MANDIR/$MANPAGE"

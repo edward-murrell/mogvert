@@ -1,5 +1,3 @@
-gcc mogconvert.c -o mogconvert -lmp3lame -lvorbisfile -lao
-
 BUFFER SIZE IS IN BYTES.
 
 // This stuff is going to have to go.
