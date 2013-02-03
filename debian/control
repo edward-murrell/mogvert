@@ -8,5 +8,5 @@ Homepage: https://github.com/edward-murrell/mogvert
 
 Package: mogvert
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends} libmp3lame0 libvorbisfile3 libflac++6 libao4
+Depends: ${shlibs:Depends}, ${misc:Depends}, libmp3lame0 (>= 3.98.2), libvorbisfile3 (>= 1.2.0), libflac++6 (>=1.2.1), libao4 (>= 1.0.0)
 Description: Mogvert is an command line audio reencoder.
