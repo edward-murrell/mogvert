@@ -43,6 +43,9 @@ stuff happens. (Make same size as input easiest).
 		fwrite(encout, 1, encoding_status,outputfile);
 }
 
+// NOTE: reconsider encoder/decoder inheritance , may have modules that
+// implement both - avoid overlapping functions
+
 cli app passes args
 options:
 ops object calls decoders
@@ -75,6 +78,19 @@ use cases:
 			> non-autodetec on ext or magic numbers should be special / unusal case anyway
 			Also, if multiple input types, there should be handling of passing multiple options
 			so; --decode-mp3-skip-id3v1 | --decode-flac-map-chans=1,2,0,0,0 ( map left right, and drop LR, RR, and center channels) should work
+			> register options & filetypes (?) with mogvOption
+			mogvCliOptions mogvcliopt->registerDecoder(); -- can't pass classes by reference
+			> steps; register filetypes
+concept; decoder option name, which is sometimes (but not always the same as the file type)
+		prepend decoder option to decoder type, internal structure of class, filetypes, opts
+		how to register class implementations, need self registering proxy objects
+		>	singleton class (self creating at runtime) list of modules
+		> proxy classes for each module that contain the listing of each module
+		
+		Modules listing class - self registers;
+			mogvModuleRegister - singleton
+			mogvProxy - virtual, include code to register, default to none, with warning
+		
 		
 	lib (gui) use case
 		loads modules
