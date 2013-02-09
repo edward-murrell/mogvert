@@ -19,6 +19,12 @@
 #define NUM_DECODERS 2
 #define NUM_ENCODERS 2
 
+#define mog_opt_type int
+
+#define MOGV_OBJECT_DECODER 1
+#define MOGV_OBJECT_ENCODER 2
+#define MOGV_OBJECT_PCMFILTER 4
+
 //#define _BIG_ENDIAN
 
 struct generic_file_info {
