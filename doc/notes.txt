@@ -60,13 +60,21 @@ use cases:
 	code says;
 		I have file to decode;
 		loads modules
-		modules give list of supported file formats (somehow)
+		modules give list of supported file formats (somehow) # NOTE: causes issue where opts are parsed twice
 		checks against list of supported file formats
 		loads decoder, asks decoder, what are your supported options
 		decoder returns struct/object with list/callbacks [or use setoption?]
 		loop calls getargs object parser
 		loop passes decoder.setargs(cliargs.getdecoderoptions())
 		
+		
+		issues: Need to parse for coder type first, which may require parsing file exts
+
+		then load modules apropriately, and parse those options
+			if all are reg'd, not particularly efficent (though need to do this for file types / magic numbers anyway)
+			> non-autodetec on ext or magic numbers should be special / unusal case anyway
+			Also, if multiple input types, there should be handling of passing multiple options
+			so; --decode-mp3-skip-id3v1 | --decode-flac-map-chans=1,2,0,0,0 ( map left right, and drop LR, RR, and center channels) should work
 		
 	lib (gui) use case
 		loads modules
@@ -82,4 +90,5 @@ use cases:
 		
 decoder, encoder, need to implement
 
-		getOptions
+		getOptions // List of options
+		
