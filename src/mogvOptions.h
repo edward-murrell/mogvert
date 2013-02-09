@@ -11,6 +11,8 @@
 #include <vector>
 
 #include "mogconvert.h"
+#include "decoder_objects.h" // TODO, Not happy with having these here
+#include "encoder_objects.h" 
 
 typedef struct {
 	const char * name;
@@ -27,11 +29,19 @@ typedef struct {
 
 typedef std::vector<mogv_option> mogv_options;
 
+// TODO, move this somewhere better
+typedef struct {
+	FILE * inputfile;
+	FILE * outputfile;
+	decoder * decoder_obj;
+	encoder * encoder_obj;
+} mogv_iteration;
+
 namespace mogvert
 {
   class mogvOptions
     {
 	public:
-	    virtual mogv_options getOptions(mogv_opt_type option_type)=0;
+	    virtual mogv_iteration * getIteration()=0;
     };
 }
