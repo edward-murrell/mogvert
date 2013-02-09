@@ -22,6 +22,7 @@
 #define MOGV_OBJECT_DECODER 1
 #define MOGV_OBJECT_ENCODER 2
 #define MOGV_OBJECT_PCMFILTER 4
+#define MOGV_OBJECT_NONE 127
 
 #define mogv_obj_type int
 
