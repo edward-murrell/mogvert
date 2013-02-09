@@ -19,11 +19,12 @@
 #define NUM_DECODERS 2
 #define NUM_ENCODERS 2
 
-#define mog_opt_type int
-
 #define MOGV_OBJECT_DECODER 1
 #define MOGV_OBJECT_ENCODER 2
 #define MOGV_OBJECT_PCMFILTER 4
+
+#define mogv_obj_type int
+
 
 //#define _BIG_ENDIAN
 
