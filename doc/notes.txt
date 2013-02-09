@@ -90,6 +90,59 @@ concept; decoder option name, which is sometimes (but not always the same as the
 		Modules listing class - self registers;
 			mogvModuleRegister - singleton
 			mogvProxy - virtual, include code to register, default to none, with warning
+	
+	CLI use case on above;
+		module proxy load automatically, and register selves with singleton mogvModuleRegister
+		loop calls (mogopt) mogvCliOptions(argc,v)
+		
+		mogvModuleRegister->getEncoderByExt ->getDecoderByMagic ->getDecoderByName
+		
+		loop calls mogopt->getIteration (rename)
+				getIteration() returns struct with
+					input
+					ouput
+					decoder
+					encoder
+				getEmptyIteration() returns struct with
+					input
+					output
+					decoder
+					encoder
+					decoder_options
+					encoder_options
+					...
+				Private;
+					decoder_options (hash map with type)
+					input_file (singular)
+					output_file (singular)
+					program_options ??
+				Internal flow;
+				Constructer:
+					read argc/v
+					where --decoder-{type}-{opt} = value
+						check if valid with mogvModuleRegister()  (or internal)
+						decoder_options[$type][$opt] = value;
+						repeat for other module types
+					where --opt
+						program_options[$opt] = value //  hashmap?
+					where input
+						input list // start with one item
+					
+				
+				getIteration()
+					pop item from list
+					
+		
+		
+		loads modules
+		modules give list of supported file formats (somehow) # NOTE: causes issue where opts are parsed twice
+		checks against list of supported file formats
+		loads decoder, asks decoder, what are your supported options
+		decoder returns struct/object with list/callbacks [or use setoption?]
+		loop calls getargs object parser
+		loop passes decoder.setargs(cliargs.getdecoderoptions())
+		
+
 		
 		
 	lib (gui) use case
