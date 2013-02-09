@@ -1,5 +1,12 @@
 Tabs are tabs are tabs. They are not spaces.
 
--Wall is used for a reason. You can break it your machine.
+The program is mogvert - one word, lowercase, no hypens or underscores
 
-The lead co-developer uses PPC. Don't piss him off by making patchs endian dependant.
+Constants should be uppercase, prefixed with MOGV_
+classes should be camelcase; mogvOpt, mogvEncoder
+methods are so far lower case, underscore seperate (ie get_coder_info) 
+variables are lowercase, underscre seperated 
+
+All of these are violated due to running code pre-empting this style guide
+
+-Wall is used for a reason. You can break it your machine.

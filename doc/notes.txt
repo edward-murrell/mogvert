@@ -42,3 +42,44 @@ stuff happens. (Make same size as input easiest).
 	if (encoding_status>0)
 		fwrite(encout, 1, encoding_status,outputfile);
 }
+
+cli app passes args
+options:
+ops object calls decoders
+coders refer to obs objects/structs
+
+mainloop object passes coder options
+
+use cases:
+	cli, ie, all args are passed through
+	lib in specfic case, all/most args are already known
+	lib in generic case (gui), all args are generated interpreted, options
+	need to be queried from coders
+	
+	cli use case
+	code says;
+		I have file to decode;
+		loads modules
+		modules give list of supported file formats (somehow)
+		checks against list of supported file formats
+		loads decoder, asks decoder, what are your supported options
+		decoder returns struct/object with list/callbacks [or use setoption?]
+		loop calls getargs object parser
+		loop passes decoder.setargs(cliargs.getdecoderoptions())
+		
+		
+	lib (gui) use case
+		loads modules
+		modules give list of supported file formats (somehow)
+		user selects output format (encoder)
+		loop asks module for options
+		encoder returns struct of options
+		encoder option screen extends options object as mogvguiopt, which loads with an 
+		user clicks ok
+		user clicks run
+		decoder is setup
+		loops passes encoder.setargs(mogvguiopt.getencoderoptions();
+		
+decoder, encoder, need to implement
+
+		getOptions
