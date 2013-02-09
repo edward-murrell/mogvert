@@ -4,7 +4,8 @@ The program is mogvert - one word, lowercase, no hypens or underscores
 
 Constants should be uppercase, prefixed with MOGV_
 classes should be camelcase; mogvOpt, mogvEncoder
-methods are so far lower case, underscore seperate (ie get_coder_info) 
+methods are so far lower case, underscore seperate (ie get_coder_info),
+but should be camelcase; getCoderInfo
 variables are lowercase, underscre seperated 
 
 All of these are violated due to running code pre-empting this style guide
