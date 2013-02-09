@@ -32,6 +32,6 @@ namespace mogvert
   class mogvOptions
     {
 	public:
-	    virtual bool getOptions(mogv_opt_type option_type)=0;
+	    virtual mogv_options getOptions(mogv_opt_type option_type)=0;
     };
 }
