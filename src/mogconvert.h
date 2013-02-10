@@ -40,6 +40,7 @@ struct generic_file_info {
 };
 
 struct coder_info {
+    mogv_obj_type type;
 	const char * shortname;
 	const char * longname;
     const char * suffix;
