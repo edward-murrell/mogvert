@@ -1,3 +1,15 @@
+Mogvert [03/02/2013]-v0.2
+ - Imported into git
+ - Cleaned up references to old / outdated libraries
+ - Added 64bit support
+ - Added test harness to Makefiles
+ - Enabled debian packaging
+ - Updated configure script to support --prefix
+ - Added case insenstive checking to the ogg decoder for tag keys
+ - Added metadata support to the FLAC decoder
+ - Fixed error/status messages in stdout corrupting output
+ - Updated man page
+
 Mogconvert [22/05/2004]-v0.1a-4:
  - Added a configure script which takes
    care of platform specific idiosyncracies
