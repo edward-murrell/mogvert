@@ -5,20 +5,18 @@ using namespace mogvert;
 class mogvModuleRegister {
 	public:
 		mogvModuleRegister();
-	
 		// TODO, change these to getModuleByXyz with MOGV_OBJECT_X when modules are subclassed
-		void static registerModule(coder_info * module_info);
+		void registerModule(mogvModuleProxy * proxy, coder_info * module_info);
+		decoder * getDecoderByExt  (const char *ext); // TODO, Change return type to proxy, maybe possible to add ident type to getDecoder
+		decoder * getDecoderByMagic(const char *magic);
+		decoder * getDecoderByName (const char *name);
+		encoder * getEncoderByExt  (const char *ext);
+		encoder * getEncoderByMagic(const char *magic);
+		encoder * getEncoderByName (const char *name);
+		~mogvModuleRegister();
 		
-		static decoder * getDecoderByExt  (const char *ext);
-		static decoder * getDecoderByMagic(const char *magic);
-		static decoder * getDecoderByName (const char *name);
-		static encoder * getEncoderByExt  (const char *ext);
-		static encoder * getEncoderByMagic(const char *magic);
-		static encoder * getEncoderByName (const char *name);
-		
-       ~mogvModuleRegister();		
+		static mogvModuleRegister* getStaticInstance(); // Used for self registering classes		
 	private:
-       static mogvModuleRegister* getStaticInstance(); // Used for self registering classes
-       static mogvModuleRegister* staticInstance;
+		static mogvModuleRegister * staticInstance;
 };
 
