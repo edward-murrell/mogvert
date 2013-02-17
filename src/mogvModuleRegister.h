@@ -27,5 +27,8 @@ class mogvModuleRegister {
 		mogProxyMap decoder_list_exts;
 		mogProxyMap decoder_list_name;
 		mogProxyMap decoder_list_magic;
+		mogProxyMap encoder_list_exts;
+		mogProxyMap encoder_list_name;
+		mogProxyMap encoder_list_magic;		
 };
 
