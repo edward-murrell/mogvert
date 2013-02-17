@@ -1,5 +1,8 @@
 #include "mogconvert.h"
 #include "mogvOptions.h"
+#include "mogvModuleProxy.h"
+#include <hash_map>
+#include <strings.h> // should this be a C++ include?
 
 using namespace mogvert;
 class mogvModuleRegister {
