@@ -44,6 +44,7 @@ struct coder_info {
 	const char * shortname;
 	const char * longname;
     const char * suffix;
+    const char * magic;
     bool decoder;
     bool encoder;
 };
