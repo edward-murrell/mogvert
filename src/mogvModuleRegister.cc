@@ -16,18 +16,11 @@ void mogvModuleRegister::registerModule(mogvModuleProxy * proxy) { // TODO, prox
 }
 
 decoder * mogvModuleRegister::getDecoderByExt  (const char *ext) {
-	std::cout << "Looking for suffix |" << ext << "| in list - count: " << this->decoder_list_exts.count(ext) << std::endl;
-	std::string search_string = std::string(ext);
-	mogProxyMapIter result = this->decoder_list_exts.find (search_string);
-	if (result == decoder_list_exts.end()) {
-		std::cout << "nope" << std::endl; // Debug, remove
+	mogProxyMapIter result = this->decoder_list_exts.find (std::string(ext));
+	if (result == decoder_list_exts.end())
 		return NULL;
-	}
-	else {
-		std::cout << "found" << std::endl; // Debug, remove
-		result->second->whoAmI();
+	else
 		return result->second->createDecoder();
-	}
 }
 /*
 mogvModuleRegister * mogvModuleRegister::getStaticInstance() {
