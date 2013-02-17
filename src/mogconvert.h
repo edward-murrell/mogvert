@@ -45,8 +45,8 @@ struct coder_info {
 	const char * longname;
     const char * suffix;
     const char * magic;
-    bool decoder;
-    bool encoder;
+    bool decoder; // Deprecated in favour of type, above
+    bool encoder; // Also deprecated
 };
 
 struct encoding_options {
