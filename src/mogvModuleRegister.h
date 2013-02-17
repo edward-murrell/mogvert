@@ -12,7 +12,7 @@ class mogvModuleRegister {
 	public:
 		mogvModuleRegister();
 		// TODO, change these to getModuleByXyz with MOGV_OBJECT_X when modules are subclassed
-		void registerModule(mogvModuleProxy * proxy, coder_info * module_info);
+		void registerModule(mogvModuleProxy * proxy);
 		decoder * getDecoderByExt  (const char *ext); // TODO, Change return type to proxy, maybe possible to add ident type to getDecoder
 		decoder * getDecoderByMagic(const char *magic);
 		decoder * getDecoderByName (const char *name);
