@@ -1,8 +1,11 @@
 #include "mogconvert.h"
 #include "mogvOptions.h"
 #include "mogvModuleProxy.h"
-#include <hash_map>
+#include <unordered_map>
 #include <strings.h> // should this be a C++ include?
+
+typedef std::unordered_map<const char*, mogvModuleProxy*> mogProxyMap;
+typedef std::unordered_map<const char*, mogvModuleProxy*>::const_iterator mogProxyMapIter;
 
 using namespace mogvert;
 class mogvModuleRegister {
@@ -21,5 +24,8 @@ class mogvModuleRegister {
 		static mogvModuleRegister* getStaticInstance(); // Used for self registering classes		
 	private:
 		static mogvModuleRegister * staticInstance;
+		mogProxyMap decoder_list_exts;
+		mogProxyMap decoder_list_name;
+		mogProxyMap decoder_list_magic;
 };
 
