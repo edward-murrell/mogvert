@@ -6,34 +6,25 @@ mogvModuleRegister::mogvModuleRegister() {
 
 void mogvModuleRegister::registerModule(mogvModuleProxy * proxy) { // TODO, proxy should have it's own damn module_info reference, possible overload?
 	coder_info * module_info = proxy->getModuleInfo(); // coder/module
-	std::cout << "Adding suffix |" << module_info->suffix << "|" << std::endl;
-	if (module_info->type && MOGV_OBJECT_DECODER == MOGV_OBJECT_DECODER) {
-		this->decoder_list_name [module_info->shortname] = proxy; // TODO, add test at compile time that strings are lowercase
-		this->decoder_list_exts [module_info->suffix]    = proxy; 
-		this->decoder_list_magic[module_info->magic]     = proxy; // This would be a really good time to get the maximum length of the magic for look ahead purposes
+	if ((module_info->type && MOGV_OBJECT_DECODER) == MOGV_OBJECT_DECODER) {
+		std::cerr << "Adding decoder; " << module_info->longname << " (." << module_info->suffix << ")" << std::endl;
+		this->decoder_list_name [std::string(module_info->shortname)] = proxy; // TODO, add test at compile time that strings are lowercase
+		this->decoder_list_exts [std::string(module_info->suffix)]    = proxy; 
+		this->decoder_list_magic[std::string(module_info->magic)]     = proxy; // This would be a really good time to get the maximum length of the magic for look ahead purposes
 	}
 	// Repeat all this for the encoder types
 }
 
 decoder * mogvModuleRegister::getDecoderByExt  (const char *ext) {
-	mogProxyMapIter i =  decoder_list_exts.begin();
-	while (i != decoder_list_exts.end()) {
-				i->second->whoAmI();
-
-	}
-
-	
-	
-	
-	std::cout << "Looking for suffix |" << ext << "| in list" << this->decoder_list_exts.count(ext) << std::endl;
-	
-	mogProxyMapIter result = this->decoder_list_exts.find (ext);
+	std::cout << "Looking for suffix |" << ext << "| in list - count: " << this->decoder_list_exts.count(ext) << std::endl;
+	std::string search_string = std::string(ext);
+	mogProxyMapIter result = this->decoder_list_exts.find (search_string);
 	if (result == decoder_list_exts.end()) {
-		std::cout << "nope" << endl; // Debug, remove		
+		std::cout << "nope" << std::endl; // Debug, remove
 		return NULL;
 	}
 	else {
-		std::cout << "found" << endl; // Debug, remove
+		std::cout << "found" << std::endl; // Debug, remove
 		result->second->whoAmI();
 		return result->second->createDecoder();
 	}

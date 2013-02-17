@@ -9,6 +9,7 @@ mogvModuleProxy::mogvModuleProxy() {
 	info->longname = "Foobar4000 fileformat";
     info->suffix = "fo1"; // Because they thought there would be a version two.
     info->magic = "F00v1";
+    info->type = MOGV_OBJECT_DECODER;
     this->info = info;
 }
 
@@ -16,7 +17,7 @@ decoder* mogvModuleProxy::createDecoder() { return NULL; }
 encoder* mogvModuleProxy::createEncoder() { return NULL; }
 
 void mogvModuleProxy::whoAmI() {
-	    std::cout << "I'm " << this->info->longname;
+	    std::cout << "I'm " << this->info->longname << " file suffix; \"" << this->info->suffix << "\"" << std::endl; // worst concat ever
 }
 
 coder_info * mogvModuleProxy::getModuleInfo() {

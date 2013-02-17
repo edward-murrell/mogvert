@@ -4,8 +4,8 @@
 #include <unordered_map>
 #include <strings.h> // should this be a C++ include?
 
-typedef std::unordered_map<const char*, mogvModuleProxy*> mogProxyMap;
-typedef std::unordered_map<const char*, mogvModuleProxy*>::const_iterator mogProxyMapIter;
+typedef std::unordered_map<std::string, mogvModuleProxy*> mogProxyMap;
+typedef std::unordered_map<std::string, mogvModuleProxy*>::const_iterator mogProxyMapIter;
 
 using namespace mogvert;
 class mogvModuleRegister {
