@@ -22,7 +22,7 @@ typedef struct {
         int32_t		sint_value;	// MOGV_OPT_TYPE_SINT
        const char	char_value;	// MOGV_OPT_TYPE_CHAR
        uint32_t   *	a_uint_value;	// MOGV_OPT_TYPE_UINT_ARRAY
-         int32_t  *	a_sint_value;	// MOGV_OPT_TYPE_SINT_ARRAY
+        int32_t   *	a_sint_value;	// MOGV_OPT_TYPE_SINT_ARRAY
        const char *	a_char_value;	// MOGV_OPT_TYPE_CHAR_ARRAY
     } data;
 } mogv_option;
