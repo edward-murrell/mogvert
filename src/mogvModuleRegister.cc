@@ -43,13 +43,3 @@ mogvModuleRegister * mogvModuleRegister::getStaticInstance() {
 	return mogvModuleRegister::staticInstance;
 }
 */
-
-// This whole thing is to debug
-int main (int arc, char* argv[]) { 
-	mogvModuleRegister* reg = new mogvModuleRegister();
-	mogvModuleProxy * proxy = new mogvModuleProxy();
-	reg->registerModule(proxy);
-	decoder * samewise = reg->getDecoderByExt("fo1");
-	encoder * boom     = reg->getEncoderByExt("fo1");
-	return 5;
-}

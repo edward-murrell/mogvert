@@ -8,10 +8,11 @@ class mogvModuleProxy {
 	// Create coder instance class
 	public:
 		mogvModuleProxy();
+		mogvModuleProxy(coder_info * info);
 		decoder* createDecoder();
 		encoder* createEncoder();
 		coder_info * getModuleInfo();
-		void whoAmI(); // Debug function, to be removed
+		void whoAmI();
 	private:
 		coder_info * info;
 };
