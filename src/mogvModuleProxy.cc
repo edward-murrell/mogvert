@@ -11,7 +11,7 @@ mogvModuleProxy::mogvModuleProxy(coder_info * info) {
 decoder* mogvModuleProxy::createDecoder() { return NULL; }
 encoder* mogvModuleProxy::createEncoder() { return NULL; }
 
-void mogvModuleProxy::whoAmI() {
+void mogvModuleProxy::whoAmI() { // TODO Remove this in favour of a test module with assertions
 	    std::cout << "I'm " << this->info->longname << " file suffix; \"" << this->info->suffix << "\"" << std::endl; // worst concat ever
 }
 

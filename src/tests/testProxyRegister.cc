@@ -18,5 +18,6 @@ int main (int arc, char* argv[]) {
 	decoder * samewise = reg->getDecoderByExt("fo1");
 	encoder * boom     = reg->getEncoderByExt("fo1");
 
+	// TODO: Add asserts into this
 	proxy.whoAmI();
 }
