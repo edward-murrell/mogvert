@@ -5,10 +5,15 @@
 
 class encoder {
   private:
-  protected:
-coder_info local_coder_info;
   public:
-virtual coder_info* get_coder_info() { return &this->local_coder_info; }; // Can we spin this into a super class at some point? 
+    static coder_info * get_coder_info() {
+        coder_info * info = new coder_info;
+        info->type      = 0;
+        info->shortname = "Unreal encoder";
+        info->longname  = "Unreal encoder";
+        info->suffix    = 0;
+        return info;
+    }  
 virtual int init(struct generic_file_info  &gfi, struct encoding_options &encodeop) =0 ;
 virtual int encode(struct generic_file_info &gfi, unsigned char &wave_buffer, int wave_buffer_size, unsigned char &encoded_buffer)=0 ;
 virtual int close(struct generic_file_info &gfi, unsigned char &wave_buffer, int wave_buffer_size, unsigned char &encoded_buffer)=0 ;

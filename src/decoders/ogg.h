@@ -20,6 +20,7 @@ bool init(FILE *inputfile);
 void getgfi(struct generic_file_info &gfi);
 int decode(unsigned char &wave_buffer);
 int close(unsigned char &wave_buffer);
+static coder_info * get_coder_info();
 };
 
 #endif /* _MOGDECODEOBJECTS_OGG_H_ */

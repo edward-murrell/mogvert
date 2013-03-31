@@ -1,9 +1,18 @@
 #include "flac.h"
 
 flac_decoder::flac_decoder() {
-    coder_info local_coder_init = {"FLAC","FLAC decoder","flac"};
-    local_coder_info = local_coder_init; // Seem silly?
 }
+
+coder_info * flac_decoder::get_coder_info() {
+	coder_info * info = new coder_info;
+	info->type      = MOGV_OBJECT_DECODER;
+	info->shortname = "FLAC";
+    info->longname  = "FLAC decoder";
+	info->suffix    = "flac";
+	info->magic		= "fLaC";
+	return info;
+}
+
 
 bool flac_decoder::test(FILE *inputfile)
 {

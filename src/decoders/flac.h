@@ -40,6 +40,7 @@ class flac_decoder: public decoder {
 FILE *inputfile;
   public:
 flac_decoder();
+static coder_info * get_coder_info();
 bool test(FILE *inputfile);
 bool init(FILE *inputfile);
 void getgfi(struct generic_file_info &gfi);

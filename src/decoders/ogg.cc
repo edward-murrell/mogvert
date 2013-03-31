@@ -1,8 +1,16 @@
 #include "ogg.h"
 
 ogg_decoder::ogg_decoder() {
-    coder_info local_coder_init = {"Ogg","Xiph Ogg Vorbis decoder","ogg"};
-    local_coder_info = local_coder_init;
+}
+
+coder_info * get_coder_info() {
+	coder_info * info = new coder_info;
+	info->type      = MOGV_OBJECT_DECODER;
+	info->shortname = "Ogg.";
+    info->longname  = "Xiph Ogg Vorbis decoder";
+	info->suffix    = "ogg";
+	info->magic		= "OggS";
+	return info;
 }
 
 bool ogg_decoder::test(FILE *inputfile)	// This should be a static method.
