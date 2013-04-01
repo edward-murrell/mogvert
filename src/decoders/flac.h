@@ -3,11 +3,11 @@
 
 #include "../mogconvert.h"
 #include "../decoder_objects.h"
+#include "../mogvModuleProxy.h"
 #include <FLAC++/metadata.h>
 #include <FLAC++/decoder.h>
-
 #include <stdio.h>
-
+#include <string.h>
 
 typedef struct flac_wave_buffer_node {
 	unsigned char buffer[WAVE_BUFFER_SIZE];
@@ -49,5 +49,18 @@ int close(unsigned char &wave_buffer);
 virtual ~flac_decoder();
 };
 
-#endif /* _MOGDECODEOBJECTS_FLAC_H_ */
+class flac_decoder_proxy: public mogvModuleProxy {
+  public:
+    decoder * createDecoder();
+    void registerProxy(coder_info * info) {}
+};
 
+
+inline int flac_register() {
+    flac_decoder_proxy * dec = new flac_decoder_proxy();
+    dec->registerProxy(flac_decoder::get_coder_info());    
+    return 1;
+}
+static const int flac_register_int = flac_register();
+
+#endif /* _MOGDECODEOBJECTS_FLAC_H_ */

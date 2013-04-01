@@ -1,9 +1,13 @@
 #include "ogg.h"
 
+decoder* ogg_decoder_proxy::createDecoder() {
+    return new ogg_decoder();
+}
+
 ogg_decoder::ogg_decoder() {
 }
 
-coder_info * get_coder_info() {
+coder_info * ogg_decoder::get_coder_info() {
 	coder_info * info = new coder_info;
 	info->type      = MOGV_OBJECT_DECODER;
 	info->shortname = "Ogg.";

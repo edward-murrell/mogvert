@@ -1,5 +1,10 @@
 #include "flac.h"
 
+decoder* flac_decoder_proxy::createDecoder() {
+    return new flac_decoder();
+}
+
+
 flac_decoder::flac_decoder() {
 }
 
