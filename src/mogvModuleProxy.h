@@ -1,3 +1,6 @@
+#ifndef _MOGDECODEOBJECTS_MOGVMODULEPROXY_H_
+#define _MOGDECODEOBJECTS_MOGVMODULEPROXY_H_
+
 #include "mogconvert.h"
 #include "decoder_objects.h"
 #include "encoder_objects.h"
@@ -8,7 +11,7 @@ class mogvModuleProxy {
 	// Create coder instance class
 	public:
 		mogvModuleProxy();
-		mogvModuleProxy(coder_info * info);
+		void registerProxy(coder_info * info);
 		decoder* createDecoder();
 		encoder* createEncoder();
 		coder_info * getModuleInfo();
@@ -16,3 +19,4 @@ class mogvModuleProxy {
 	private:
 		coder_info * info;
 };
+#endif /* _MOGDECODEOBJECTS_MOGVMODULEPROXY_H_ */
