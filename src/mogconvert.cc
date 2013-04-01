@@ -1,5 +1,7 @@
 #include "mogconvert.h"
 #include "decoder_objects.h"
+#include "decoders/ogg.h"
+#include "decoders/flac.h"
 #include "encoder_objects.h"
 #include "init.h"
 #include "filehandler.h"
@@ -62,7 +64,7 @@ int main(int argc,  char* argv[])
 		exit(1);
 	}
 
-    dec_info = decoder_ob->get_coder_info();
+    dec_info = decoder_ob::get_coder_info();
     fprintf(stderr,"\nInitilizing decoding engine... %s\n",dec_info->longname);
 	if (! decoder_ob->init(inputfile)) {
 		fprintf(stderr,"Failed to open input file.\n");
@@ -95,7 +97,7 @@ int main(int argc,  char* argv[])
 		fprintf(stderr, "Invalid encoder. This is a bug!\n");
 		exit(1);
 	}
-	enc_info = encoder_ob->get_coder_info();
+	enc_info = encoder_ob->get_coder_info(); // EKM 2013-04-01 - This currently fails, info needs to be moved to proxy class
 	fprintf(stderr,"\nInitilizing encoding engine... %s\n",enc_info->longname);
 	encoder_ob->init(gfi, encodeop);
 
