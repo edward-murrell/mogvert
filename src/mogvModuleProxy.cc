@@ -3,9 +3,13 @@
 
 mogvModuleProxy::mogvModuleProxy() {
 }
-mogvModuleProxy::mogvModuleProxy(coder_info * info) {
+
+void mogvModuleProxy::registerProxy(coder_info * info) {
 	this->info = info;
+	this->whoAmI();
+	// Registration with the singularity goes here
 }
+
 
 // These should be overriden
 decoder* mogvModuleProxy::createDecoder() { return NULL; }
