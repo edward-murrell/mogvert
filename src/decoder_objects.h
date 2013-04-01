@@ -23,8 +23,8 @@ public:
 	virtual int close(unsigned char &wave_buffer)=0 ;
 	//virtual ~decoder();
 };
-#include "decoders/flac.h"
-#include "decoders/ogg.h"
+//#include "decoders/flac.h"
+//#include "decoders/ogg.h"
 //#include "decoders/cdda.h"
 
 #endif /* _MOGDECODEOBJECTS_H_ */
