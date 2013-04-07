@@ -7,6 +7,17 @@
 #include <strings.h>
 
 
+
+const char * get_ext(const char *arg) {
+	const char* suffix = strrchr ( arg , '.'); // TODO, seperate out finding the extensions into it's own function
+	if (suffix == NULL) // strrchr: http://www.cplusplus.com/reference/clibrary/cstring/strrchr/
+		suffix = arg; // It's not a file extension
+	if (suffix[0] == '.'){
+		suffix++;
+	}
+    return suffix;
+}
+
 // TODO: Get the length of string to be passed in, too
 // TODO: More importantly, fix the code that passes in an uninitialised value for string
 //	and causes a segfault.

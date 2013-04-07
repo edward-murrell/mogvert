@@ -95,7 +95,16 @@ mog_info mog_initmog(int argc, char* argv[]) {
 		// what option caused it
 		prevarg = (char *)optarg;
 	}
-            
+
+    if (info.dec_module == NULL || strcmp(info.dec_module,"autodetect") == 0 ) {
+        info.dec_module = get_ext(info.input_file);
+    }
+    if (info.enc_module == NULL || strcmp(info.enc_module,"autodetect") == 0 ) {
+        info.enc_module = get_ext(info.output_file);
+    }
+
+
+
 	fprintf(stderr,"Done!\n");
 	if(show_stats == 1) mog_sumstats(info);
 	return info;
