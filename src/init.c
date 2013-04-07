@@ -17,9 +17,7 @@ mog_info mog_initmog(int argc, char* argv[]) {
 
 	// set some default values which will hopefully be changed
 	// by arguments on the command line
-	//c 		    =	' ';
 	// TODO: put these all in config.h
-	info.enc_module		=	0; // TODO: this should be a malloc()'ed string, at least strlen("FLAC") in length
 	show_stats	    =	0;
     prevarg		    =	argv[1];
 	info.input_file     = 	"/dev/stdin";
