@@ -5,7 +5,8 @@
 #include "encoder_objects.h"
 #include "init.h"
 #include "filehandler.h"
-#include "mogvModuleRegistry.h"
+#include "mogvModuleRegister.h"
+#include "mogvModuleRegistery.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -36,74 +37,48 @@ int main(int argc,  char* argv[])
 	struct generic_file_info gfi;
 
 	info           = mog_initmog(argc,argv); 	// parse comandline arguments
+    fprintf(stderr,"\ninput file = %s\n",info.input_file);
 	inputfile      = fopen(info.input_file,"rb");	// open inputfile
 	outputfile     = fopen(info.output_file,"wb");	// open outputfile
 
     encodeop.bitrate = info.bitrate;
 
-// expand on this to setup multiple file formats, add the tests for their validity to filehandler.c
-// ======================================================
-
-// == Init the decoder
-
 	coder_info* dec_info, *enc_info;
-	if (info.dec_module == NULL || strcmp(info.dec_module,"autodetect") == 0 ) {
-		decode_format = get_code(info.input_file);
-		info.dec_module = audiotype[decode_format];
-		printf("Detected decode format as %s\n",info.dec_module);
-	} else if (check_decoder(info.dec_module)) {
-		decode_format = get_code(info.dec_module);
-	} else {
-		fprintf(stderr,"Failed to detect input format.\n");
-		exit(1); // TODO - Need proper (and documented) exit codes
-	}
+    
+    mogvModuleProxy * dec_proxy = reg->getDecoderProxyByExt ( info.dec_module );
+    mogvModuleProxy * enc_proxy = reg->getEncoderProxyByExt ( info.enc_module );
 
-	switch (decode_format) {
-	case FORMAT_OGG:
-		decoder_ob = new ogg_decoder(); break;
-	case FORMAT_FLAC:
-		decoder_ob = new flac_decoder(); break;
-	default: // ideally this case would be caught and thrown earlier in the piece
-		fprintf(stderr, "Invalid decoder.\n");
+	if (dec_proxy == NULL) {
+		fprintf(stderr,"Failed to detect input format.\n");
 		exit(1);
 	}
+	if (enc_proxy == NULL) {
+		fprintf(stderr,"Failed to detect output format.\n");
+		exit(1);
+	}    
 
-    dec_info = decoder_ob::get_coder_info();
-    fprintf(stderr,"\nInitilizing decoding engine... %s\n",dec_info->longname);
+// == Init the decoder
+    
+    fprintf(stderr,"\nInitilizing decoding engine... %s\n",dec_proxy->getModuleInfo()->longname);
+    decoder_ob = dec_proxy->createDecoder();
+    
 	if (! decoder_ob->init(inputfile)) {
 		fprintf(stderr,"Failed to open input file.\n");
 		exit(1); // TODO - Need proper (and documented) exit codes
 	}
-	decoder_ob->getgfi(gfi);
 
+	decoder_ob->getgfi(gfi); // todo, change to return pointer
 
 // == Init the encoder
 
-	// check if the encoder is supported
-	if (info.enc_module == NULL || strcmp(info.enc_module,"autodetect") == 0) { // Guess encoder from output file extension
-		encode_format = get_code(info.output_file);
-		info.enc_module = audiotype[encode_format];
-		printf("Set encode format to %s\n",info.enc_module);
-	} else if (check_encoder(info.enc_module)) {
-		encode_format = get_code(info.enc_module);  // Get encoder from -e arg
-	} else {
-   		fprintf(stderr,"Unknown output format.\n");
-		exit(1);
+    fprintf(stderr,"\nInitilizing Encoding engine... %s\n",enc_proxy->getModuleInfo()->longname);
+    encoder_ob = enc_proxy->createEncoder();
+	
+    if (! encoder_ob->init(gfi, encodeop)) {
+		fprintf(stderr,"Failed to open input file.\n");
+		exit(1); // TODO - Need proper (and documented) exit codes
 	}
 
-
-	switch (encode_format) {
-	case FORMAT_MP3:
-		encoder_ob = new mp3_encoder(); break;
-	case FORMAT_AO:
-		encoder_ob = new ao_encoder(); break;
-	default: // *should* never execute, since input should get caught above
-		fprintf(stderr, "Invalid encoder. This is a bug!\n");
-		exit(1);
-	}
-	enc_info = encoder_ob->get_coder_info(); // EKM 2013-04-01 - This currently fails, info needs to be moved to proxy class
-	fprintf(stderr,"\nInitilizing encoding engine... %s\n",enc_info->longname);
-	encoder_ob->init(gfi, encodeop);
 
 // DECODING STARTS HERE ======================================================
 
