@@ -19,7 +19,7 @@ int close(struct generic_file_info &gfi, unsigned char &wave_buffer, int wave_bu
 class mp3_encoder_proxy: public mogvModuleProxy {
   public:
     mp3_encoder_proxy();
-    decoder * createDecoder();
+    encoder * createEncoder();
 };
 
 

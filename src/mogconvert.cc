@@ -5,6 +5,7 @@
 #include "encoder_objects.h"
 #include "init.h"
 #include "filehandler.h"
+#include "mogvModuleRegistry.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -15,6 +16,9 @@ const char* audiotype[] = {"undefined", "wav", "mp3", "ogg", "flac", "ao"};
 
 int main(int argc,  char* argv[])
 {
+    mogv_register_modules();
+    mogvModuleRegister * reg = mogvModuleRegister::getStaticInstance();
+    
 	mog_info info;	// struct for cmdline args
     struct encoding_options encodeop;
 	FILE *inputfile;

@@ -1,6 +1,6 @@
 #include "ao.h"
 
-decoder* ao_encoder_proxy::createDecoder() {
+encoder* ao_encoder_proxy::createEncoder() {
     return new ao_encoder();
 }
 
