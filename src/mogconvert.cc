@@ -37,7 +37,6 @@ int main(int argc,  char* argv[])
 	struct generic_file_info gfi;
 
 	info           = mog_initmog(argc,argv); 	// parse comandline arguments
-    fprintf(stderr,"\ninput file = %s\n",info.input_file);
 	inputfile      = fopen(info.input_file,"rb");	// open inputfile
 	outputfile     = fopen(info.output_file,"wb");	// open outputfile
 
