@@ -7,7 +7,7 @@ mogvModuleRegister::mogvModuleRegister() {
 void mogvModuleRegister::registerModule(mogvModuleProxy * proxy) { // TODO, proxy should have it's own damn module_info reference, possible overload?
 	coder_info * module_info = proxy->getModuleInfo(); // coder/module
 	if ((module_info->type & MOGV_OBJECT_DECODER) == MOGV_OBJECT_DECODER) {
-		std::cerr << "Adding decoder; " << module_info->longname << " (." << module_info->suffix << ")" << std::endl;
+		std::cerr << "Adding decoder; " << module_info->longname << " (." << std::string(module_info->suffix) << ")" << std::endl;
 		this->decoder_list_name [std::string(module_info->shortname)] = proxy; // TODO, add test at compile time that strings are lowercase
 		this->decoder_list_exts [std::string(module_info->suffix)]    = proxy; 
 		this->decoder_list_magic[std::string(module_info->magic)]     = proxy; // This would be a really good time to get the maximum length of the magic for look ahead purposes
@@ -18,6 +18,15 @@ void mogvModuleRegister::registerModule(mogvModuleProxy * proxy) { // TODO, prox
 		this->encoder_list_exts [std::string(module_info->suffix)]    = proxy; 
 		this->encoder_list_magic[std::string(module_info->magic)]     = proxy;
 	}	
+}
+
+
+mogvModuleProxy * mogvModuleRegister::getDecoderProxyByExt  (const char *ext) {
+	mogProxyMapIter result = this->decoder_list_exts.find (std::string(ext));
+	if (result == decoder_list_exts.end())
+		return NULL;
+	else
+		return result->second;
 }
 
 decoder * mogvModuleRegister::getDecoderByExt  (const char *ext) {
@@ -36,10 +45,12 @@ encoder * mogvModuleRegister::getEncoderByExt  (const char *ext) {
 		return result->second->createEncoder();
 	}
 }
-/*
+
 mogvModuleRegister * mogvModuleRegister::getStaticInstance() {
-	if (!mogvModuleRegister::staticInstance);
-		mogvModuleRegister::staticInstance = new mogvModuleRegister;
-	return mogvModuleRegister::staticInstance;
+	static mogvModuleRegister * staticInstance;
+	if (staticInstance == NULL) {
+		staticInstance = new mogvModuleRegister;
+	}
+	return staticInstance;
 }
-*/
+

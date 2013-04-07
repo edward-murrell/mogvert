@@ -1,3 +1,6 @@
+#ifndef _MOGDECODEOBJECTS_MOGVMODULEREGISTER_H_
+#define _MOGDECODEOBJECTS_MOGVMODULEREGISTER_H_
+
 #include "mogconvert.h"
 #include "mogvOptions.h"
 #include "mogvModuleProxy.h"
@@ -13,6 +16,10 @@ class mogvModuleRegister {
 		mogvModuleRegister();
 		// TODO, change these to getModuleByXyz with MOGV_OBJECT_X when modules are subclassed
 		void registerModule(mogvModuleProxy * proxy);
+
+		mogvModuleProxy * getDecoderProxyByExt  (const char *ext);
+		mogvModuleProxy * getEncoderProxyByExt  (const char *ext);
+				
 		decoder * getDecoderByExt  (const char *ext); // TODO, Change return type to proxy, maybe possible to add ident type to getDecoder
 		decoder * getDecoderByMagic(const char *magic);
 		decoder * getDecoderByName (const char *name);
@@ -23,7 +30,6 @@ class mogvModuleRegister {
 		
 		static mogvModuleRegister* getStaticInstance(); // Used for self registering classes		
 	private:
-		static mogvModuleRegister * staticInstance;
 		mogProxyMap decoder_list_exts;
 		mogProxyMap decoder_list_name;
 		mogProxyMap decoder_list_magic;
@@ -32,3 +38,4 @@ class mogvModuleRegister {
 		mogProxyMap encoder_list_magic;		
 };
 
+#endif /* _MOGDECODEOBJECTS_MOGVMODULEREGISTER_H_ */
