@@ -1,16 +1,20 @@
 #include "mp3.h"
 
-mp3_encoder::mp3_encoder() {
+decoder* mp3_encoder_proxy::createDecoder() {
+    return new mp3_encoder();
 }
 
-coder_info * mp3_encoder::get_coder_info() {
+mp3_encoder_proxy::mp3_encoder_proxy() {
 	coder_info * info = new coder_info;
 	info->type      = MOGV_OBJECT_ENCODER;
 	info->shortname = "MP3";
     info->longname  = "LAME MP3 Encoder";
 	info->suffix    = "mp3";
 	info->magic		= "ID3";
-	return info;
+	this->info = info;
+}
+
+mp3_encoder::mp3_encoder() {
 }
 
 int  mp3_encoder::init(struct generic_file_info &gfi, struct encoding_options &encodeop)

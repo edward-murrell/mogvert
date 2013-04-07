@@ -1,16 +1,20 @@
 #include "ao.h"
 
-ao_encoder::ao_encoder() {
+decoder* ao_encoder_proxy::createDecoder() {
+    return new ao_encoder();
 }
 
-coder_info * ao_encoder::get_coder_info() {
+ao_encoder_proxy::ao_encoder_proxy() {
 	coder_info * info = new coder_info;
 	info->type      = MOGV_OBJECT_ENCODER;
 	info->shortname = "AO";
     info->longname  = "Libao Audio Output library";
 	info->suffix    = "";
 	info->magic		= "";
-	return info;
+	this->info = info;
+}
+
+ao_encoder::ao_encoder() {
 }
 
 int ao_encoder::init(struct generic_file_info &gfi, struct encoding_options &encodeop)
