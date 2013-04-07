@@ -10,13 +10,12 @@ class mogvModuleProxy {
 	// static? coder_info
 	// Create coder instance class
 	public:
-		mogvModuleProxy();
-		void registerProxy(coder_info * info);
+		//mogvModuleProxy();
 		decoder* createDecoder();
 		encoder* createEncoder();
 		coder_info * getModuleInfo();
 		void whoAmI();
-	private:
+	protected:
 		coder_info * info;
 };
 #endif /* _MOGDECODEOBJECTS_MOGVMODULEPROXY_H_ */

@@ -51,16 +51,8 @@ virtual ~flac_decoder();
 
 class flac_decoder_proxy: public mogvModuleProxy {
   public:
+    flac_decoder_proxy();
     decoder * createDecoder();
-    void registerProxy(coder_info * info) {}
 };
-
-
-inline int flac_register() {
-    flac_decoder_proxy * dec = new flac_decoder_proxy();
-    dec->registerProxy(flac_decoder::get_coder_info());    
-    return 1;
-}
-static const int flac_register_int = flac_register();
 
 #endif /* _MOGDECODEOBJECTS_FLAC_H_ */

@@ -1,20 +1,20 @@
 #include "ogg.h"
 
-decoder* ogg_decoder_proxy::createDecoder() {
+decoder * ogg_decoder_proxy::createDecoder() {
     return new ogg_decoder();
 }
 
-ogg_decoder::ogg_decoder() {
-}
-
-coder_info * ogg_decoder::get_coder_info() {
+ogg_decoder_proxy::ogg_decoder_proxy() {
 	coder_info * info = new coder_info;
 	info->type      = MOGV_OBJECT_DECODER;
 	info->shortname = "Ogg.";
     info->longname  = "Xiph Ogg Vorbis decoder";
 	info->suffix    = "ogg";
 	info->magic		= "OggS";
-	return info;
+	this->info = info;
+}
+
+ogg_decoder::ogg_decoder() {
 }
 
 bool ogg_decoder::test(FILE *inputfile)	// This should be a static method.

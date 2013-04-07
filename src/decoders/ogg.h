@@ -26,18 +26,9 @@ static coder_info * get_coder_info();
 
 class ogg_decoder_proxy: public mogvModuleProxy {
   public:
+    ogg_decoder_proxy();
     decoder * createDecoder();
-    void registerProxy(coder_info * info) {}    
 };
-
-
-inline int ogg_register() {
-    ogg_decoder_proxy * proxy = new ogg_decoder_proxy();
-    proxy->registerProxy(ogg_decoder::get_coder_info());
-    return 1;
-}
-static const int ogg_register_int = ogg_register(); 
-
 
 #endif /* _MOGDECODEOBJECTS_OGG_H_ */
 

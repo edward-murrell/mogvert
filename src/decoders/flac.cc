@@ -4,20 +4,18 @@ decoder* flac_decoder_proxy::createDecoder() {
     return new flac_decoder();
 }
 
-
-flac_decoder::flac_decoder() {
-}
-
-coder_info * flac_decoder::get_coder_info() {
+flac_decoder_proxy::flac_decoder_proxy() {
 	coder_info * info = new coder_info;
 	info->type      = MOGV_OBJECT_DECODER;
 	info->shortname = "FLAC";
     info->longname  = "FLAC decoder";
 	info->suffix    = "flac";
 	info->magic		= "fLaC";
-	return info;
+	this->info = info;
 }
 
+flac_decoder::flac_decoder() {
+}
 
 bool flac_decoder::test(FILE *inputfile)
 {

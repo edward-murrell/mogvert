@@ -6,14 +6,6 @@
 
 class decoder {
 public:
-    static coder_info * get_coder_info() {
-        coder_info * info = new coder_info;
-        info->type      = 0;
-        info->shortname = "Unreal decoder";
-        info->longname  = "Unreal decoder";
-        info->suffix    = NULL;
-        return info;
-    }
 	virtual bool test(FILE *inputfile)=0;
 	virtual bool init(FILE *inputfile)=0;
 	// it'd be nice if this function was actually
