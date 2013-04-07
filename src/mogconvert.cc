@@ -75,7 +75,7 @@ int main(int argc,  char* argv[])
     encoder_ob = enc_proxy->createEncoder();
 	
     if (! encoder_ob->init(gfi, encodeop)) {
-		fprintf(stderr,"Failed to open input file.\n");
+		fprintf(stderr,"Failed to open output file.\n");
 		exit(1); // TODO - Need proper (and documented) exit codes
 	}
 
