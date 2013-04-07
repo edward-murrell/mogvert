@@ -11,8 +11,8 @@ fi
 
 CXX=g++
 VERSION="0.2"
-CXXFLAGS=" -Wall -g -pipe"
-OBJS="init.o error.o filehandler.o decoders/ogg.o decoders/flac.o encoders/mp3.o encoders/ao.o"
+CXXFLAGS=" -Wall -g -pipe -std=c++0x"
+OBJS="init.o error.o filehandler.o mogvModuleProxy.o mogvModuleRegister.o mogvModuleRegistery.o decoders/ogg.o decoders/flac.o encoders/mp3.o encoders/ao.o"
 OBJ_BIN="mogconvert.o"
 BINARY="mogvert"
 BINDIR="bin"
