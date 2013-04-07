@@ -1,3 +1,6 @@
+#ifndef _MOGDECODEOBJECTS_MOGVOPTIONS_H_
+#define _MOGDECODEOBJECTS_MOGVOPTIONS_H_
+
 #define MOGV_OPT_TYPE_UINT 1
 #define MOGV_OPT_TYPE_SINT 3
 #define MOGV_OPT_TYPE_CHAR 4
@@ -45,3 +48,6 @@ namespace mogvert
 	    virtual mogv_iteration * getIteration()=0;
     };
 }
+
+#endif /* _MOGDECODEOBJECTS_MOGVOPTIONS_H_ */
+
