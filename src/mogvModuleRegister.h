@@ -2,7 +2,7 @@
 #include "mogvOptions.h"
 #include "mogvModuleProxy.h"
 #include <unordered_map>
-#include <strings.h> // should this be a C++ include?
+#include <string> // should this be a C++ include?
 
 typedef std::unordered_map<std::string, mogvModuleProxy*> mogProxyMap;
 typedef std::unordered_map<std::string, mogvModuleProxy*>::const_iterator mogProxyMapIter;
