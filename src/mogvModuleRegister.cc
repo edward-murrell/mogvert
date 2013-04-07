@@ -29,6 +29,14 @@ mogvModuleProxy * mogvModuleRegister::getDecoderProxyByExt  (const char *ext) {
 		return result->second;
 }
 
+mogvModuleProxy * mogvModuleRegister::getEncoderProxyByExt  (const char *ext) {
+	mogProxyMapIter result = this->encoder_list_exts.find (std::string(ext));
+	if (result == encoder_list_exts.end())
+		return NULL;
+	else
+		return result->second;
+}
+
 decoder * mogvModuleRegister::getDecoderByExt  (const char *ext) {
 	mogProxyMapIter result = this->decoder_list_exts.find (std::string(ext));
 	if (result == decoder_list_exts.end())
