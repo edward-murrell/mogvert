@@ -13,7 +13,7 @@ ao_encoder_proxy::ao_encoder_proxy() {
 	info->type      = MOGV_OBJECT_ENCODER;
 	info->shortname = "AO";
     info->longname  = "Libao Audio Output library";
-	info->suffix    = "";
+	info->suffix    = "ao"; // TODO, fix this lie
 	info->magic		= "";
 	this->info = info;
 }
@@ -38,7 +38,7 @@ int ao_encoder::init(struct generic_file_info &gfi, struct encoding_options &enc
 		out_format.byte_format = AO_FMT_LITTLE;
 #endif
 	out_device = ao_open_live(out_driver_id, &out_format,NULL);
-	return 0; // TODO - Again, this should actually return an error if something is borked
+	return 1; // TODO - Again, this should actually return an error if something is borked
 }
 
 int ao_encoder::encode(struct generic_file_info &gfi, unsigned char &wave_buffer, int wave_buffer_size, unsigned char &encoded_buffer)
