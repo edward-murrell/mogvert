@@ -28,6 +28,7 @@ class ogg_decoder_proxy: public mogvModuleProxy {
   public:
     ogg_decoder_proxy();
     decoder * createDecoder();
+    encoder * createEncoder();
 };
 
 #endif /* _MOGDECODEOBJECTS_OGG_H_ */

@@ -1,9 +1,5 @@
 #include "ogg.h"
 
-decoder * ogg_decoder_proxy::createDecoder() {
-    return new ogg_decoder();
-}
-
 ogg_decoder_proxy::ogg_decoder_proxy() {
 	coder_info * info = new coder_info;
 	info->type      = MOGV_OBJECT_DECODER;
@@ -12,6 +8,14 @@ ogg_decoder_proxy::ogg_decoder_proxy() {
 	info->suffix    = "ogg";
 	info->magic		= "OggS";
 	this->info = info;
+}
+
+decoder * ogg_decoder_proxy::createDecoder() {
+	return new ogg_decoder();
+}
+
+encoder * ogg_decoder_proxy::createEncoder() {
+	return NULL;
 }
 
 ogg_decoder::ogg_decoder() {
