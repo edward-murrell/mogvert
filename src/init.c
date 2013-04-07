@@ -11,7 +11,6 @@ mog_info mog_initmog(int argc, char* argv[]) {
 
 	int			c; // getopt's return val
 	int			show_stats;
-	int			show_help;
 	struct mog_info		info;	// infile outfile decmod encmod
 	extern char 		*optarg;
 	extern int 		optind;
@@ -22,7 +21,6 @@ mog_info mog_initmog(int argc, char* argv[]) {
 	// TODO: put these all in config.h
 	info.enc_module		=	0; // TODO: this should be a malloc()'ed string, at least strlen("FLAC") in length
 	show_stats	    =	0;
-	show_help	    =	0;
     prevarg		    =	argv[1];
 	info.input_file     = 	"/dev/stdin";
 	info.output_file    = 	"/dev/stdout";

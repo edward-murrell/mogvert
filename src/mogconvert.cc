@@ -24,8 +24,6 @@ int main(int argc,  char* argv[])
     struct encoding_options encodeop;
 	FILE *inputfile;
 	FILE *outputfile;
-	int decode_format = 0;	// TODO - Should really make these part of a struct
-	int encode_format = 0;
 
     decoder *decoder_ob;
     encoder *encoder_ob;
@@ -41,8 +39,6 @@ int main(int argc,  char* argv[])
 	outputfile     = fopen(info.output_file,"wb");	// open outputfile
 
     encodeop.bitrate = info.bitrate;
-
-	coder_info* dec_info, *enc_info;
     
     mogvModuleProxy * dec_proxy = reg->getDecoderProxyByExt ( info.dec_module );
     mogvModuleProxy * enc_proxy = reg->getEncoderProxyByExt ( info.enc_module );
