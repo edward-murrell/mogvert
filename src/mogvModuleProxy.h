@@ -11,8 +11,8 @@ class mogvModuleProxy {
 	// Create coder instance class
 	public:
 		//mogvModuleProxy();
-		virtual decoder* createDecoder() =0;
-		virtual encoder* createEncoder() =0;
+		virtual decoder* createDecoder();
+		virtual encoder* createEncoder();
 		coder_info * getModuleInfo();
 		void whoAmI();
 	protected:
