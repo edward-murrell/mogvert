@@ -1,9 +1,5 @@
 #include "mp3.h"
 
-decoder* mp3_encoder_proxy::createDecoder() {
-    return NULL;
-}
-
 encoder* mp3_encoder_proxy::createEncoder() {
     return new mp3_encoder();
 }
