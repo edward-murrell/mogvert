@@ -160,4 +160,11 @@ concept; decoder option name, which is sometimes (but not always the same as the
 decoder, encoder, need to implement
 
 		getOptions // List of options
-		
+
+2013/04/09
+		- Proxy objects know about name, extensions, 
+		- Should they know about options?
+			* Options are name,type,function/callback
+			* Have virtual methods in super class for registering, and processing
+			  options and options vector list
+			
