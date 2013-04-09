@@ -4,10 +4,6 @@ decoder* flac_decoder_proxy::createDecoder() {
     return new flac_decoder();
 }
 
-encoder * flac_decoder_proxy::createEncoder() {
-	return NULL;
-}
-
 flac_decoder_proxy::flac_decoder_proxy() {
 	coder_info * info = new coder_info;
 	info->type      = MOGV_OBJECT_DECODER;

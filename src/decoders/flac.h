@@ -53,7 +53,6 @@ class flac_decoder_proxy: public mogvModuleProxy {
   public:
     flac_decoder_proxy();
     decoder * createDecoder();
-    encoder * createEncoder();
 };
 
 #endif /* _MOGDECODEOBJECTS_FLAC_H_ */

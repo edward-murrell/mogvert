@@ -14,10 +14,6 @@ decoder * ogg_decoder_proxy::createDecoder() {
 	return new ogg_decoder();
 }
 
-encoder * ogg_decoder_proxy::createEncoder() {
-	return NULL;
-}
-
 ogg_decoder::ogg_decoder() {
 }
 
