@@ -7,6 +7,7 @@ classes should be camelcase; mogvOpt, mogvEncoder
 methods are so far lower case, underscore seperate (ie get_coder_info),
 but should be camelcase; getCoderInfo
 variables are lowercase, underscre seperated 
+structs are lowercase, underscore seperated, mogv_ prefixed
 
 All of these are violated due to running code pre-empting this style guide
 
