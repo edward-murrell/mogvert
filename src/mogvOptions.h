@@ -19,6 +19,12 @@
 
 typedef struct {
 	const char * name;
+	const char * description;
+	mogv_opt_type type;
+} mogv_option_listing;
+
+typedef struct {
+	const char * name;
 	mogv_opt_type type;
     union {
        uint32_t		uint_value;	// MOGV_OPT_TYPE_UINT
@@ -42,11 +48,24 @@ typedef struct {
 
 namespace mogvert
 {
-  class mogvOptions
+  /* Parse options by given method and pair of initalized encoder/decoder
+   * objects [ getIteration() ] or struct of files, mogvProxy objects and
+   * option struct vectors [ getEmptyIteration() ]
+   */
+  class OptionsParser
     {
 	public:
 	    virtual mogv_iteration * getIteration()=0;
+	    virtual mogv_empty_iteration * getEmptyIteration()=0;
     };
+    
+  /* Add this to decoder/encoder/other classes
+   * needs: register name/description/type/callback handler
+  class OptionsHandler
+	private:
+	    virtual register
+	public:
+   */
 }
 
 #endif /* _MOGDECODEOBJECTS_MOGVOPTIONS_H_ */
