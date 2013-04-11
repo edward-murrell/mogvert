@@ -86,6 +86,8 @@ namespace mogvert
 	     * @param method method to process the options with.
 	     */ 
 	    virtual void registerOption(const char * name, const char * description, mogv_opt_type type, void (OptionsHandler::*method)(mogv_option * opt)); 
+	protected:
+	    // TODO, add hashmap(s) to hold data from registerOption() here
 	public:
 	    /* Process an single option setting
 	     * @param opt Pointer to the mogv_option struct to process
