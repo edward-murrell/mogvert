@@ -76,10 +76,25 @@ namespace mogvert
    */
   class OptionsHandler {
 	private:
+	    /* Called at construction time to register options
+	     * Parameters are the name, long description, type and method to process
+	     * If this is overriden in child classes, it will be nessacery to override
+	     * OptionsHandler::setOption() and OptionsHandler::SetOptionStack() as well. 
+	     * @param name shortname of the parameter, should be lower case, and not have spaces. Examples; bitrate, hz, device
+	     * @param description Long plain english description of the option. Example; "Set the encoded bitrate of the output mp3."
+	     * @param type The type of input to expect. Use the MOGV_OPT_TYPE_ definations
+	     * @param method method to process the options with.
+	     */ 
 	    virtual void registerOption(const char * name, const char * description, mogv_opt_type type, void (OptionsHandler::*method)(mogv_option * opt)); 
 	public:
-	    virtual void setOption(mogv_option * opt); // exceptions???
-
+	    /* Process an single option setting
+	     * @param opt Pointer to the mogv_option struct to process
+	     */
+	    virtual void setOption(mogv_option * opt); // exceptions???	
+	    /* Process a mogv_options stack (vector of mogv_option structs)
+	     * @param opts Pointer to vector of mogv_option structs
+	     */ 
+	    virtual void setOptionStack(mogv_options * opts); // exceptions???
     };
 
 }
