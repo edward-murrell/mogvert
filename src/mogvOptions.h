@@ -16,6 +16,7 @@
 #include "mogconvert.h"
 #include "decoder_objects.h" // TODO, Not happy with having these here
 #include "encoder_objects.h" 
+#include "mogvModuleProxy.h"
 
 typedef struct {
 	const char * name;
@@ -46,8 +47,19 @@ typedef struct {
 	encoder * encoder_obj;
 } mogv_iteration;
 
+
+typedef struct {
+	FILE * inputfile;
+	FILE * outputfile;
+	mogvModuleProxy * decoder_proxy;
+	mogvModuleProxy * encoder_proxy;
+	mogv_options * decoder_options;
+	mogv_options * encoder_options;
+} mogv_empty_iteration;
+
 namespace mogvert
 {
+    
   /* Parse options by given method and pair of initalized encoder/decoder
    * objects [ getIteration() ] or struct of files, mogvProxy objects and
    * option struct vectors [ getEmptyIteration() ]
@@ -61,11 +73,15 @@ namespace mogvert
     
   /* Add this to decoder/encoder/other classes
    * needs: register name/description/type/callback handler
-  class OptionsHandler
-	private:
-	    virtual register
-	public:
    */
+  class OptionsHandler {
+	private:
+	    virtual void registerOption(const char * name, const char * description, mogv_opt_type type, void (OptionsHandler::*method)(mogv_option * opt)); 
+	public:
+	    virtual void setOption(mogv_option * opt); // exceptions???
+
+    };
+
 }
 
 #endif /* _MOGDECODEOBJECTS_MOGVOPTIONS_H_ */
