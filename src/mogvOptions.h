@@ -70,9 +70,6 @@ typedef struct {
 namespace mogvert
 {
 
-  /* Internal name->method mapper */
-  //typedef std::unordered_map<std::string, void (OptionsHandler::*method)(mogv_option * opt)> mogv_opt_handler_map;
-
   
   /* Parse options by given method and pair of initalized encoder/decoder
    * objects [ getIteration() ] or struct of files, mogvProxy objects and
@@ -91,6 +88,15 @@ namespace mogvert
   class OptionsHandler {
 	private:
 	protected:
+		/* Typedef of pointer-to-member for setting options. */
+		typedef void (OptionsHandler::*options_set_method)(mogv_option *);
+		
+		/* Typedef Internal name->method mapper. */
+		typedef std::unordered_map<std::string, options_set_method> mogv_opt_handler_map;
+	
+	    mogv_module_options  * options_list; /* Internal list of the options available. */
+	    mogv_opt_handler_map * options_map;  /* Internal map of name->method */
+	
 	    /* Called at construction time to register options
 	     * Parameters are the name, long description, type and method to process
 	     * If this is overriden in child classes, it will be nessacery to override
@@ -99,12 +105,8 @@ namespace mogvert
 	     * @param description Long plain english description of the option. Example; "Set the encoded bitrate of the output mp3."
 	     * @param type The type of input to expect. Use the MOGV_OPT_TYPE_ definations
 	     * @param method method to process the options with.
-	     */ 
-	    virtual void registerOption(const char * name, const char * description, mogv_opt_type type, void (OptionsHandler::*method)(mogv_option * opt));
-	    
-	    mogv_module_options *    options_list; /* Internal list of the options available. */
-	    mogv_opt_handler_map * options_map;  /* Internal map of name->method */
-	    //std::unordered_map<std::string, void (OptionsHandler::*mogv_opt_handler_map)(mogv_option * opt)> ; // Is it possible to typedef this?
+	     */
+	    virtual void registerOption(const char * name, const char * description, mogv_opt_type type, options_set_method method);
 	public:
 	    /* Process an single option setting
 	     * @param opt Pointer to the mogv_option struct to process
@@ -116,7 +118,6 @@ namespace mogvert
 	    virtual void setOptionStack(mogv_option_stack * opts);
 	    virtual mogv_module_options * getOptions();
     };
-  typedef void (OptionsHandler::*options_set_method)(mogv_option *);
 }
 
 #endif /* _MOGDECODEOBJECTS_MOGVOPTIONS_H_ */

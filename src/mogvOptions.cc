@@ -16,5 +16,5 @@ void OptionsHandler::setOptionStack(mogv_option_stack * opts) {
 }
 
 mogv_module_options * OptionsHandler::getOptions() {
-    return this->options;
+    return this->options_list;
 }
