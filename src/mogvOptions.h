@@ -11,21 +11,28 @@
 #define mogv_opt_type int
 
 #include <inttypes.h>
+#include <string>
 #include <vector>
+#include <map>
+#include <unordered_map>
+
 
 #include "mogconvert.h"
 #include "decoder_objects.h" // TODO, Not happy with having these here
 #include "encoder_objects.h" 
 #include "mogvModuleProxy.h"
 
+/* Describes a single available option that can be set. */
 typedef struct {
 	const char * name;
 	const char * description;
 	mogv_opt_type type;
 } mogv_option_listing;
 
-typedef std::vector<mogv_option_listing> mogv_options_list; // almost certainly not a vector
+/* List of options that can be set for a given module. */
+typedef std::map<std::string,mogv_option_listing> mogv_module_options;
 
+/* Describes a single option that has been set. */
 typedef struct {
 	const char * name;
 	mogv_opt_type type;
@@ -39,29 +46,34 @@ typedef struct {
     } data;
 } mogv_option;
 
-typedef std::vector<mogv_option> mogv_options;
+/* A stack of options to be applied to a given module. */
+typedef std::vector<mogv_option> mogv_option_stack;
 
-// TODO, move this somewhere better
+/* A single pair of initalized encoder & decoder objects to be used in conjunction. */
 typedef struct {
-	FILE * inputfile;
-	FILE * outputfile;
+	FILE * inputfile; /* To be removed */
+	FILE * outputfile; /* To be removed */
 	decoder * decoder_obj;
 	encoder * encoder_obj;
 } mogv_iteration;
 
-
+/* A pair of input and output stream/files, proxy objects predefined to initate processing modules, and option stacks to use against them. */
 typedef struct {
 	FILE * inputfile;
 	FILE * outputfile;
 	mogvModuleProxy * decoder_proxy;
 	mogvModuleProxy * encoder_proxy;
-	mogv_options * decoder_options;
-	mogv_options * encoder_options;
+	mogv_option_stack * decoder_options;
+	mogv_option_stack * encoder_options;
 } mogv_empty_iteration;
 
 namespace mogvert
 {
-    
+
+  /* Internal name->method mapper */
+  //typedef std::unordered_map<std::string, void (OptionsHandler::*method)(mogv_option * opt)> mogv_opt_handler_map;
+
+  
   /* Parse options by given method and pair of initalized encoder/decoder
    * objects [ getIteration() ] or struct of files, mogvProxy objects and
    * option struct vectors [ getEmptyIteration() ]
@@ -88,25 +100,23 @@ namespace mogvert
 	     * @param type The type of input to expect. Use the MOGV_OPT_TYPE_ definations
 	     * @param method method to process the options with.
 	     */ 
-	    virtual void registerOption(const char * name, const char * description, mogv_opt_type type, void (OptionsHandler::*method)(mogv_option * opt)); 
-	    mogv_options_list * options_list; /* Internal list of the options available. Maybe I'll just make this an array */
-	    mogv_opt_handler_map * options_map /* Internal map of name->method */
+	    virtual void registerOption(const char * name, const char * description, mogv_opt_type type, void (OptionsHandler::*method)(mogv_option * opt));
+	    
+	    mogv_module_options *    options_list; /* Internal list of the options available. */
+	    mogv_opt_handler_map * options_map;  /* Internal map of name->method */
+	    //std::unordered_map<std::string, void (OptionsHandler::*mogv_opt_handler_map)(mogv_option * opt)> ; // Is it possible to typedef this?
 	public:
 	    /* Process an single option setting
 	     * @param opt Pointer to the mogv_option struct to process
 	     */
 	    virtual void setOption(mogv_option * opt); // exceptions???	
-	    /* Process a mogv_options stack (vector of mogv_option structs)
+	    /* Process a mogv_option_stack stack (vector of mogv_option structs)
 	     * @param opts Pointer to vector of mogv_option structs
 	     */ 
-	    virtual void setOptionStack(mogv_options * opts);
-	    virtual mogv_options * getOptions();
+	    virtual void setOptionStack(mogv_option_stack * opts);
+	    virtual mogv_module_options * getOptions();
     };
-
+  typedef void (OptionsHandler::*options_set_method)(mogv_option *);
 }
 
 #endif /* _MOGDECODEOBJECTS_MOGVOPTIONS_H_ */
-
-// storage is a unordered_map
-// get list needs to iterate, and be addressable by name (stl map)
-// return list need to be a vector

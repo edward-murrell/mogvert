@@ -12,8 +12,9 @@ void OptionsHandler::registerOption(
 void OptionsHandler::setOption(mogv_option * opt) {
     
 }
-void OptionsHandler::setOptionStack(mogv_options * opts) {}
+void OptionsHandler::setOptionStack(mogv_option_stack * opts) {
+}
 
-mogv_options * OptionsHandler::getOptions() {
+mogv_module_options * OptionsHandler::getOptions() {
     return this->options;
 }
