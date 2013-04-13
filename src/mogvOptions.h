@@ -24,6 +24,8 @@ typedef struct {
 	mogv_opt_type type;
 } mogv_option_listing;
 
+typedef std::vector<mogv_option_listing> mogv_options_list; // almost certainly not a vector
+
 typedef struct {
 	const char * name;
 	mogv_opt_type type;
@@ -76,6 +78,7 @@ namespace mogvert
    */
   class OptionsHandler {
 	private:
+	protected:
 	    /* Called at construction time to register options
 	     * Parameters are the name, long description, type and method to process
 	     * If this is overriden in child classes, it will be nessacery to override
@@ -86,8 +89,8 @@ namespace mogvert
 	     * @param method method to process the options with.
 	     */ 
 	    virtual void registerOption(const char * name, const char * description, mogv_opt_type type, void (OptionsHandler::*method)(mogv_option * opt)); 
-	protected:
-	    // TODO, add hashmap(s) to hold data from registerOption() here
+	    mogv_options_list * options_list; /* Internal list of the options available. Maybe I'll just make this an array */
+	    mogv_opt_handler_map * options_map /* Internal map of name->method */
 	public:
 	    /* Process an single option setting
 	     * @param opt Pointer to the mogv_option struct to process
@@ -96,10 +99,14 @@ namespace mogvert
 	    /* Process a mogv_options stack (vector of mogv_option structs)
 	     * @param opts Pointer to vector of mogv_option structs
 	     */ 
-	    virtual void setOptionStack(mogv_options * opts); // exceptions???
+	    virtual void setOptionStack(mogv_options * opts);
+	    virtual mogv_options * getOptions();
     };
 
 }
 
 #endif /* _MOGDECODEOBJECTS_MOGVOPTIONS_H_ */
 
+// storage is a unordered_map
+// get list needs to iterate, and be addressable by name (stl map)
+// return list need to be a vector

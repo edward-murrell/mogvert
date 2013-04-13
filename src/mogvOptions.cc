@@ -13,3 +13,7 @@ void OptionsHandler::setOption(mogv_option * opt) {
     
 }
 void OptionsHandler::setOptionStack(mogv_options * opts) {}
+
+mogv_options * OptionsHandler::getOptions() {
+    return this->options;
+}
