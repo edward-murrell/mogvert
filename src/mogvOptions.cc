@@ -6,7 +6,7 @@ void OptionsHandler::registerOption(
     const char * name,
     const char * description,
     mogv_opt_type type,
-    void (OptionsHandler::*method)(mogv_option * opt)) {
+    options_set_method method) {
 	
 	std::string std_name = std::string(name);
 	
@@ -23,10 +23,21 @@ void OptionsHandler::registerOption(
 	this->method_map->insert(std::make_pair(std_name,method));	
 }
 void OptionsHandler::setOption(mogv_option * opt) {
-	// Get option from options_list
-	// Check that handed opt matches the allowed type (remember, can be multiple types)
+	std::string name = std::string(opt->name);
+
+    // Get option from options_list
+    // Check that handed opt matches the allowed type (remember, can be multiple types)
+
 	// Get method from method_map
-	// Call mapped method
+	mogv_opt_handler_map_iter result = this->method_map->find(name);
+	if (result == this->method_map->end())
+		return;
+	else {
+		options_set_method method = result->second;
+		// Call mapped method
+		(this->*method)(opt);
+	}
+
 }
 void OptionsHandler::setOptionStack(mogv_option_stack * opts) {
 	//for each opts as opt, call setOption

@@ -93,6 +93,7 @@ namespace mogvert
 		
 		/* Typedef Internal name->method mapper. */
 		typedef std::unordered_map<std::string, options_set_method> mogv_opt_handler_map;
+		typedef std::unordered_map<std::string, options_set_method>::const_iterator mogv_opt_handler_map_iter;
 	
 	    mogv_module_options  * options_list; /* Internal list of the options available. */
 	    mogv_opt_handler_map * method_map;  /* Internal map of name->method */
