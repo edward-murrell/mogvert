@@ -95,7 +95,7 @@ namespace mogvert
 		typedef std::unordered_map<std::string, options_set_method> mogv_opt_handler_map;
 	
 	    mogv_module_options  * options_list; /* Internal list of the options available. */
-	    mogv_opt_handler_map * options_map;  /* Internal map of name->method */
+	    mogv_opt_handler_map * method_map;  /* Internal map of name->method */
 	
 	    /* Called at construction time to register options
 	     * Parameters are the name, long description, type and method to process
