@@ -26,14 +26,22 @@ void OptionsHandler::setOption(mogv_option * opt) {
 	std::string name = std::string(opt->name);
 
     // Get option from options_list
-    // Check that handed opt matches the allowed type (remember, can be multiple types)
+	mogv_module_options_iter opt_result = this->options_list->find(name);
+	if (opt_result == this->options_list->end()) {
+		return;
+	} else {
+		// Check that handed opt matches the allowed type (remember, can be multiple types)
+		if ((opt_result->second->type & opt->type) == 0) {
+			return; // TODO - throw exception?
+		}
+	}
 
 	// Get method from method_map
-	mogv_opt_handler_map_iter result = this->method_map->find(name);
-	if (result == this->method_map->end())
+	mogv_opt_handler_map_iter method_result = this->method_map->find(name);
+	if (method_result == this->method_map->end())
 		return;
 	else {
-		options_set_method method = result->second;
+		options_set_method method = method_result->second;
 		// Call mapped method
 		(this->*method)(opt);
 	}
