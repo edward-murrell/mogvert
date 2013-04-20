@@ -49,6 +49,9 @@ void OptionsHandler::setOption(mogv_option * opt) {
 }
 void OptionsHandler::setOptionStack(mogv_option_stack * opts) {
 	//for each opts as opt, call setOption
+	for (mogv_option_stack::iterator iter = opts->begin(); iter != opts->end(); ++iter) {
+		this->setOption(iter);
+	}
 }
 
 mogv_module_options * OptionsHandler::getOptions() {
