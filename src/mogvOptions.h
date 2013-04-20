@@ -31,7 +31,6 @@ typedef struct {
 
 /* List of options that can be set for a given module. */
 typedef std::map<std::string,mogv_option_listing*> mogv_module_options;
-typedef std::map<std::string,mogv_option_listing*>::const_iterator mogv_module_options_iter;
 
 /* Describes a single option that has been set. */
 typedef struct {
@@ -94,7 +93,6 @@ namespace mogvert
 		
 		/* Typedef Internal name->method mapper. */
 		typedef std::unordered_map<std::string, options_set_method> mogv_opt_handler_map;
-		typedef std::unordered_map<std::string, options_set_method>::const_iterator mogv_opt_handler_map_iter;
 	
 	    mogv_module_options  * options_list; /* Internal list of the options available. */
 	    mogv_opt_handler_map * method_map;  /* Internal map of name->method */

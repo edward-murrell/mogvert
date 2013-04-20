@@ -26,7 +26,7 @@ void OptionsHandler::setOption(mogv_option * opt) {
 	std::string name = std::string(opt->name);
 
     // Get option from options_list
-	mogv_module_options_iter opt_result = this->options_list->find(name);
+	mogv_module_options::const_iterator opt_result = this->options_list->find(name);
 	if (opt_result == this->options_list->end()) {
 		return;
 	} else {
@@ -37,7 +37,7 @@ void OptionsHandler::setOption(mogv_option * opt) {
 	}
 
 	// Get method from method_map
-	mogv_opt_handler_map_iter method_result = this->method_map->find(name);
+	mogv_opt_handler_map::const_iterator method_result = this->method_map->find(name);
 	if (method_result == this->method_map->end())
 		return;
 	else {
